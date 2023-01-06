@@ -1,10 +1,7 @@
 package ru.dezerom.interdiffer.presentation.widgets
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
@@ -96,4 +93,17 @@ fun FullWidthButton(
             textColor = Color.White
         )
     }
+}
+
+@Composable
+fun FullWidthCard(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Card(
+        modifier = FullWidthModifier.then(modifier),
+        shape = Shapes.small,
+        backgroundColor = Color.White,
+        content = content
+    )
 }

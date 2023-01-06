@@ -4,4 +4,6 @@
     <string name="empty_list">Список пуст</string>
     <string name="empty_list_description">Попробуйте перезагрузить страницу или добавить новый элемент</string>
     <string name="add">Добавить</string>
+    <string name="people">Люди</string>
+    <string name="comparisons">Сравнения</string>
 </resources>
