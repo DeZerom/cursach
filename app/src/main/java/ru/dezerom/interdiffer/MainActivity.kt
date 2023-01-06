@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.dezerom.interdiffer.presentation.sreens.comparisons.ComparisonsScreen
 import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
 import ru.dezerom.interdiffer.presentation.utils.Dimens
@@ -27,6 +28,7 @@ import ru.dezerom.interdiffer.presentation.utils.NavDestinations
 import ru.dezerom.interdiffer.ui.theme.InterDifferTheme
 import ru.dezerom.interdiffer.ui.theme.Shapes
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
