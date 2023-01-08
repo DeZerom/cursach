@@ -6,4 +6,6 @@
     <string name="add">Добавить</string>
     <string name="people">Люди</string>
     <string name="comparisons">Сравнения</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="unknown_error_message">Перезагрузите страницу или попробуйте позже</string>
 </resources>
