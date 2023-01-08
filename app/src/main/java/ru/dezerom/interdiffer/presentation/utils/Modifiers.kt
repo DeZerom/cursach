@@ -10,7 +10,6 @@ val FullWidthModifier = Modifier
 
 val BaseColumnModifier = Modifier
     .fillMaxSize()
-    .padding(Dimens.Paddings.basePadding)
 
 val FullWidthCardModifier = FullWidthModifier
     .padding(Dimens.Paddings.basePadding)

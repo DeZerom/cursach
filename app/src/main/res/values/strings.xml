@@ -10,4 +10,5 @@
     <string name="unknown_error_message">Перезагрузите страницу или попробуйте позже</string>
     <string name="loading">Загрузка</string>
     <string name="loading_message">Пожалуйста, подождите</string>
+    <string name="try_again">Попробовать снова</string>
 </resources>

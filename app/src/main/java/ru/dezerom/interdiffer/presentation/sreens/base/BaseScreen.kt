@@ -18,6 +18,7 @@ import ru.dezerom.interdiffer.presentation.utils.FullWidthCardModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthTextModifier
 import ru.dezerom.interdiffer.presentation.widgets.BaseBigCenteredText
+import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthButton
 import ru.dezerom.interdiffer.presentation.widgets.HeadingCenteredText
 import ru.dezerom.interdiffer.ui.theme.Orange
@@ -37,9 +38,11 @@ fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
     }
 
     when (val st = state.value) {
-        is BaseScreenState.Loading -> LoadingState()
-        is BaseScreenState.ShowingError -> ErrorState(st, viewModel::onCriticalErrorClick)
-        is BaseScreenState.ShowingInfo -> content()
+        is BaseScreenState.Loading -> BaseColumnWidget { LoadingState() }
+        is BaseScreenState.ShowingError -> BaseColumnWidget {
+            ErrorState(st, viewModel::onCriticalErrorClick)
+        }
+        is BaseScreenState.ShowingInfo ->  content()
     }
 }
 
@@ -79,32 +82,39 @@ private fun ErrorState(
     state: BaseScreenState.ShowingError,
     onCriticalButtonClick: () -> Unit
 ) {
-    Column(
-        modifier = FullWidthModifier.padding(Dimens.Paddings.basePadding),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Card(
+        modifier = FullWidthCardModifier,
+        shape = Shapes.small,
+        backgroundColor = Color.White,
+        elevation = Dimens.Elevations.baseElevation
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_error),
-            contentDescription = ""
-        )
+        Column(
+            modifier = FullWidthModifier.padding(Dimens.Paddings.basePadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_error),
+                contentDescription = ""
+            )
 
-        HeadingCenteredText(
-            text = stringResource(id = state.title),
-            modifier = FullWidthTextModifier
-                .padding(top = Dimens.Paddings.doublePadding)
-        )
+            HeadingCenteredText(
+                text = stringResource(id = state.title),
+                modifier = FullWidthTextModifier
+                    .padding(top = Dimens.Paddings.doublePadding)
+            )
 
-        BaseBigCenteredText(
-            text = stringResource(id = state.message),
-            modifier = FullWidthTextModifier
-                .padding(top = Dimens.Paddings.largePadding)
-        )
+            BaseBigCenteredText(
+                text = stringResource(id = state.message),
+                modifier = FullWidthTextModifier
+                    .padding(top = Dimens.Paddings.largePadding)
+            )
 
-        FullWidthButton(
-            text = stringResource(id = R.string.add),
-            modifier = FullWidthModifier
-                .padding(top = Dimens.Paddings.doublePadding),
-            onClick = onCriticalButtonClick
-        )
+            FullWidthButton(
+                text = stringResource(id = R.string.try_again),
+                modifier = FullWidthModifier
+                    .padding(top = Dimens.Paddings.doublePadding),
+                onClick = onCriticalButtonClick
+            )
+        }
     }
 }

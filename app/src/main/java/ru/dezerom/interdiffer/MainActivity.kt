@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = NavDestinations.People.route,
                         modifier = Modifier.padding(it))
                     {
-                        composable(NavDestinations.People.route) { PeopleScreen() }
+                        composable(NavDestinations.People.route) { PeopleScreen(viewModel()) }
                         composable(NavDestinations.Comparisons.route) { ComparisonsScreen() }
                     }
                 }
