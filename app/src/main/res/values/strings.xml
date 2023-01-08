@@ -8,4 +8,6 @@
     <string name="comparisons">Сравнения</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="unknown_error_message">Перезагрузите страницу или попробуйте позже</string>
+    <string name="loading">Загрузка</string>
+    <string name="loading_message">Пожалуйста, подождите</string>
 </resources>

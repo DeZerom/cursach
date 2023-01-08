@@ -1,4 +1,4 @@
-package ru.dezerom.interdiffer.presentation.base
+package ru.dezerom.interdiffer.presentation.sreens.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +15,8 @@ abstract class BaseViewModel: ViewModel() {
 
     private val _baseScreenState = MutableStateFlow<BaseScreenState>(BaseScreenState.ShowingInfo)
     val baseScreenState = _baseScreenState.asStateFlow()
+
+    abstract fun onCriticalErrorClick()
 
     protected fun getInfo() = viewModelScope.launch {
         _baseScreenState.value = BaseScreenState.Loading
