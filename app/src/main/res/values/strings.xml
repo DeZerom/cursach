@@ -6,9 +6,30 @@
     <string name="add">Добавить</string>
     <string name="people">Люди</string>
     <string name="comparisons">Сравнения</string>
-    <string name="unknown_error">Неизвестная ошибка</string>
-    <string name="unknown_error_message">Перезагрузите страницу или попробуйте позже</string>
     <string name="loading">Загрузка</string>
     <string name="loading_message">Пожалуйста, подождите</string>
     <string name="try_again">Попробовать снова</string>
+
+    <!-- Errors -->
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="unknown_error_message">Перезагрузите страницу или попробуйте позже</string>
+    <string name="app_is_off">Приложение выключено</string>
+    <string name="app_is_off_message">Обратитесь к разработчику</string>
+    <string name="request_limit">Слишком много запросов</string>
+    <string name="request_limit_message">Подождите буквально секундочку :)</string>
+    <string name="same_type">Попробуйте позже</string>
+    <string name="same_type_message">Слишком много однотипных действий</string>
+    <string name="internal_error">Внутреняя ошбика</string>
+    <string name="internal_error_message">Произошла внутреняя ошибка на стороне ВК. Попробуйте позже</string>
+    <string name="access_denied_error">Доступ запрещен</string>
+    <string name="access_denied_error_message">Убедитесь, что Вы используете верные идентификаторы, и доступ к контенту для текущего пользователя есть в полной версии сайта.</string>
+    <string name="page_not_found">Страница пользователя не найдена</string>
+    <string name="page_not_found_message">Страница пользователя была удалена или заблокирована</string>
+    <string name="method_limit">Слишком много запросов</string>
+    <string name="method_limit_message">Попробуйте позднее</string>
+    <string name="private_profile">Приватный профиль</string>
+    <string name="private_profile_message">У этого пользователя приватный профиль, доступа к информации нет</string>
+    <string name="wrong_identifier">Неверный идентификатор</string>
+    <string name="wrong_identifier_message">Убедитесь, что правильно ввели информацию</string>
+
 </resources>
