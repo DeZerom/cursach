@@ -19,5 +19,13 @@ data class UserDataModel(
 
     @Expose
     @SerializedName("is_closed")
-    val isClosed: Boolean? = null
+    val isClosed: Boolean? = null,
+
+    @Expose
+    @SerializedName("deactivated")
+    val deactivated: String? = null,
+
+    @Expose
+    @SerializedName("bdate")
+    val birthDate: String? = null
 )
