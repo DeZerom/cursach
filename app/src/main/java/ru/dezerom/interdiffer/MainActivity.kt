@@ -4,16 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -23,11 +25,10 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.dezerom.interdiffer.presentation.sreens.comparisons.ComparisonsScreen
 import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
-import ru.dezerom.interdiffer.presentation.utils.Dimens
-import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
-import ru.dezerom.interdiffer.presentation.utils.NavDestinations
-import ru.dezerom.interdiffer.ui.theme.InterDifferTheme
-import ru.dezerom.interdiffer.ui.theme.Shapes
+import ru.dezerom.interdiffer.presentation.utils.*
+import ru.dezerom.interdiffer.presentation.widgets.BaseCenteredText
+import ru.dezerom.interdiffer.presentation.widgets.BoldExtraBigText
+import ru.dezerom.interdiffer.ui.theme.*
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Scaffold(
-                    topBar = { TopBar() },
+                    topBar = { TopBar(navController = navController) },
                     bottomBar = { BottomBar(navController = navController) }
                 ) {
                     NavHost(
@@ -46,7 +47,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = NavDestinations.People.route,
                         modifier = Modifier.padding(it))
                     {
-                        composable(NavDestinations.People.route) { PeopleScreen(viewModel()) }
+                        composable(NavDestinations.People.route) { PeopleScreen(hiltViewModel()) }
                         composable(NavDestinations.Comparisons.route) { ComparisonsScreen() }
                     }
                 }
@@ -56,7 +57,40 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TopBar() {}
+fun TopBar(navController: NavController) {
+    TopAppBar(
+        backgroundColor = Color.Transparent
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
+        Card(
+            shape = bottomRoundedShape(),
+            backgroundColor = Color.White,
+            elevation = Dimens.Elevations.baseElevation,
+            modifier = MaxSizeModifier
+        ) {
+            Box(
+                modifier = FullWidthModifier
+            ) {
+                if (!currentDestination.isRootDestination()) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(R.string.back),
+                        modifier = Modifier.align(Alignment.CenterStart)
+                    )
+                }
+
+                currentDestination.toPresentationNavDestination()?.let {
+                    BoldExtraBigText(
+                        text = stringResource(it.title),
+                        Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun BottomBar(navController: NavController) {
@@ -73,17 +107,24 @@ fun BottomBar(navController: NavController) {
 
         Card(
             modifier = FullWidthModifier,
-            shape = Shapes.small,
+            shape = topRoundedShape(),
             backgroundColor = Color.White,
             elevation = Dimens.Elevations.baseElevation,
 
         ) {
             Row {
                 items.forEach {
+                    val isSelected = it.route == currentDestination?.route
+
                     BottomNavigationItem(
-                        selected = it.route == currentDestination?.route,
+                        selected = isSelected,
                         icon = { Image(painter = painterResource(it.icon), contentDescription = null) },
-                        label = { Text(text = stringResource(it.title)) },
+                        label = {
+                            BaseCenteredText(
+                                text = stringResource(id = it.title),
+                                textColor = if (isSelected) Orange else Color.Black
+                            )
+                        },
                         onClick = {
                             navController.navigate(it.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {

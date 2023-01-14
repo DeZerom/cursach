@@ -6,18 +6,25 @@ import ru.dezerom.interdiffer.data.network.responses.VkErrorContainer
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.domain.models.utils.VkErrorType
 
-suspend fun <T: VkErrorContainer> safeVkApiCall(
-    call: suspend () -> T?
-): RequestResult<T> {
+suspend fun <T: VkErrorContainer, R> safeVkApiCall(
+    call: suspend () -> T?,
+    successMapper: (T) -> R?
+): RequestResult<R> {
     return withContext(Dispatchers.IO) {
         try {
-            val result = call()
+            val callResult = call()
 
-            if (result != null) {
-                if (result.vkError == null)
-                    RequestResult.Success(result)
-                else
-                    RequestResult.Error.VkError(VkErrorType.fromCode(result.vkError!!.errorCode))
+            if (callResult != null) {
+                if (callResult.vkError == null) {
+                    val result = successMapper(callResult)
+
+                    if (result != null)
+                        RequestResult.Success(result)
+                    else
+                        RequestResult.Error.Network
+                } else {
+                    RequestResult.Error.VkError(VkErrorType.fromCode(callResult.vkError?.errorCode))
+                }
             } else {
                 RequestResult.Error.Network
             }

@@ -11,4 +11,12 @@ sealed class NavDestinations(
 ) {
     object People: NavDestinations("people_screen", R.drawable.ic_people, R.string.people)
     object Comparisons: NavDestinations("comp_Screen", R.drawable.ic_comparasing, R.string.comparisons)
+
+    companion object {
+        fun fromRoute(route: String?) = when (route) {
+            People.route -> People
+            Comparisons.route -> Comparisons
+            else -> null
+        }
+    }
 }

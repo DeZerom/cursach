@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 val FullWidthModifier = Modifier
     .fillMaxWidth()
 
-val BaseColumnModifier = Modifier
+val MaxSizeModifier = Modifier
     .fillMaxSize()
 
 val FullWidthCardModifier = FullWidthModifier

@@ -17,6 +17,15 @@ object Dimens {
 
     object FontSizes {
         val heading = 32.sp
-        val base = 16.sp
+        val extraBig = 24.sp
+        val big = 16.sp
+        val base = 14.sp
+        val small = 12.sp
+    }
+
+    object Sizes {
+        val smallPhotoSize = 100.dp
+
+        val defaultCornerRadius = 10.dp
     }
 }

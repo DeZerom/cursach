@@ -7,13 +7,13 @@ data class UserRequest(
 
     @Expose
     @SerializedName("user_ids")
-    val ids: List<Int>,
+    val screenNames: List<String>,
 
     @Expose
     @SerializedName("fields")
-    val fields: List<String> = emptyList(),
+    val fields: String = "",
 
     @Expose
     @SerializedName("name_case")
-    val nameCase: String
+    val nameCase: String = ""
 )

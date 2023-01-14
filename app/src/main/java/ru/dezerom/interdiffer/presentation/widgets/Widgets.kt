@@ -2,6 +2,8 @@ package ru.dezerom.interdiffer.presentation.widgets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
@@ -22,7 +24,7 @@ fun BaseColumnWidget(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
-        modifier = BaseColumnModifier,
+        modifier = MaxSizeModifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         content = content
@@ -104,6 +106,22 @@ fun FullWidthCard(
         modifier = FullWidthModifier.then(modifier),
         shape = Shapes.small,
         backgroundColor = Color.White,
+        elevation = Dimens.Elevations.baseElevation,
+        content = content
+    )
+}
+
+@Composable
+fun BaseLazyColumn(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(Dimens.Paddings.basePadding),
+    content: LazyListScope.() -> Unit
+) {
+    LazyColumn(
+        modifier = FullWidthModifier.then(modifier),
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding, Alignment.Top),
+        horizontalAlignment = Alignment.CenterHorizontally,
         content = content
     )
 }

@@ -9,6 +9,9 @@
     <string name="loading">Загрузка</string>
     <string name="loading_message">Пожалуйста, подождите</string>
     <string name="try_again">Попробовать снова</string>
+    <string name="delete">Удалить</string>
+    <string name="birthDate">Дата рождения: %s</string>
+    <string name="back">Назад</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>

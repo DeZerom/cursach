@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import ru.dezerom.interdiffer.domain.models.utils.VkErrorType
 
 abstract class BaseViewModel: ViewModel() {
 
@@ -24,8 +25,6 @@ abstract class BaseViewModel: ViewModel() {
     }
 
     protected fun getInfo() = viewModelScope.launch {
-        _baseScreenState.value = BaseScreenState.Loading
-
         if (fetchInfoAndProcessResult())
             _baseScreenState.value = BaseScreenState.ShowingInfo
         else
@@ -37,5 +36,7 @@ abstract class BaseViewModel: ViewModel() {
     protected fun setToastText(text: String) = viewModelScope.launch {
         _baseSideEffect.send(BaseSideEffect.ShowToast(text))
     }
+
+    protected fun handleVkError(type: VkErrorType) {}
 
 }
