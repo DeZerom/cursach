@@ -37,6 +37,8 @@ abstract class BaseViewModel: ViewModel() {
         _baseSideEffect.send(BaseSideEffect.ShowToast(text))
     }
 
-    protected fun handleVkError(type: VkErrorType) {}
+    protected fun handleVkError(type: VkErrorType) {
+        _baseScreenState.value = BaseScreenState.ShowingError(type.title, type.message)
+    }
 
 }

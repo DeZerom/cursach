@@ -40,7 +40,9 @@ private fun ShowListState(
     val items = viewState.list
 
     if (items.isEmpty()) {
-        EmptyListWidget { viewModel.onAddButtonClick() }
+        BaseColumnWidget {
+            EmptyListWidget { viewModel.onAddButtonClick() }
+        }
     } else {
         BaseLazyColumn {
             items(
@@ -90,7 +92,8 @@ private fun ShowListState(
                         Image(
                             painter = painterResource(id = R.drawable.ic_delete),
                             contentDescription = stringResource(id = R.string.delete),
-                            modifier = Modifier.align(Alignment.TopEnd)
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
                                 .clickable { viewModel.onItemDeleteClick() }
                         )
                     }
