@@ -6,7 +6,7 @@ import ru.dezerom.interdiffer.domain.models.DeactivationType
 import ru.dezerom.interdiffer.domain.models.utils.PartialDate
 
 @Parcelize
-data class UserModel(
+data class VkUserModel(
     val id: Int,
     val firstName: String,
     val lastName: String,

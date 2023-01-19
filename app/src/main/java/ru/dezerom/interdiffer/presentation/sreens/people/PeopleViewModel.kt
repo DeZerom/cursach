@@ -1,10 +1,12 @@
 package ru.dezerom.interdiffer.presentation.sreens.people
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
-import ru.dezerom.interdiffer.domain.models.user.UserModel
+import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import javax.inject.Inject
@@ -46,11 +48,15 @@ class PeopleViewModel @Inject constructor(
         setToastText("asdasd")
     }
 
-    fun onItemClick(item: UserModel) {
+    fun onItemClick(item: VkUserModel) = viewModelScope.launch {
         setToastText(item.firstName)
     }
 
-    fun onItemDeleteClick() {
+    fun onItemDeleteClick(item: VkUserModel) {
         setToastText("delete")
+    }
+
+    fun onInfoCircleClick() {
+        setToastText("Some info dialog here")
     }
 }
