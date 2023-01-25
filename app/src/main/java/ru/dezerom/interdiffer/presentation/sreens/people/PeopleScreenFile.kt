@@ -1,6 +1,7 @@
 package ru.dezerom.interdiffer.presentation.sreens.people
 
 import androidx.compose.runtime.*
+import ru.dezerom.interdiffer.presentation.dialogs.AddVkUserDialog
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
@@ -19,6 +20,16 @@ fun PeopleScreen(viewModel: PeopleViewModel) {
             showState.value = true
 
             InfoCirclesDescriptionDialogScreen(showState)
+        }
+
+        is PeopleScreenSideEffect.ShowAddUserDialog -> {
+            val showState = remember { mutableStateOf(true) }
+            showState.value = true
+
+            AddVkUserDialog(
+                showState = showState,
+                onUserAdd = { viewModel.onUserAddButtonClick(it) }
+            )
         }
 
         null -> {}

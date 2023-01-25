@@ -13,6 +13,9 @@
     <string name="birthDate">Дата рождения: %s</string>
     <string name="back">Назад</string>
     <string name="info_circles_description">Описание значков</string>
+    <string name="user_adding">Добавление человека</string>
+    <string name="user_id">Айди пользователя</string>
+    <string name="i_am_vk_id">demid_na_rusi</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>
@@ -35,6 +38,7 @@
     <string name="private_profile_message">У этого пользователя приватный профиль, доступа к информации нет</string>
     <string name="wrong_identifier">Неверный идентификатор</string>
     <string name="wrong_identifier_message">Убедитесь, что правильно ввели информацию</string>
+    <string name="field_should_not_be_blank">Поле не должно быть пустым</string>
 
     <!-- Info circles description -->
     <string name="sixteen_age_limit">Это сообщество имеет возрастное ограничение 16+</string>

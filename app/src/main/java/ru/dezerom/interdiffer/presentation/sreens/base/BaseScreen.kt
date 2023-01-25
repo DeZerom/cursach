@@ -6,7 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,7 +33,7 @@ fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
     when (val se = sideEffect.value) {
         is BaseSideEffect.ShowToast -> {
             val context = LocalContext.current
-            Toast.makeText(context, se.text, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, se.text, Toast.LENGTH_SHORT).show()
         }
         null -> {}
     }

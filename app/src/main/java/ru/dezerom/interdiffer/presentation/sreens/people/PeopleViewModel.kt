@@ -50,8 +50,12 @@ class PeopleViewModel @Inject constructor(
         }
     }
 
-    fun onAddButtonClick() {
-        setToastText("asdasd")
+    fun onAddButtonClick() = viewModelScope.launch {
+        _sideEffect.forceSend(PeopleScreenSideEffect.ShowAddUserDialog)
+    }
+
+    fun onUserAddButtonClick(userId: String) {
+        setToastText(userId)
     }
 
     fun onItemClick(item: VkUserModel) = viewModelScope.launch {

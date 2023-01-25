@@ -1,5 +1,6 @@
 package ru.dezerom.interdiffer.presentation.widgets
 
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,7 +8,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import ru.dezerom.interdiffer.presentation.utils.Dimens
+import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
 import ru.dezerom.interdiffer.ui.theme.TextGrey
+import ru.dezerom.interdiffer.ui.theme.textFieldColors
 
 @Composable
 fun HeadingCenteredText(
@@ -102,3 +105,26 @@ fun BoldExtraBigText(
         textAlign = TextAlign.Center
     )
 }
+
+@Composable
+fun BaseFullWidthTextInput(
+    value: String,
+    onValueChanged: (String) -> Unit,
+    label: String,
+    placeholder: String,
+    modifier: Modifier = Modifier,
+    isSingleLine: Boolean = true,
+    isError: Boolean = false
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChanged(it) },
+        label = { BaseSmallText(text = label) },
+        placeholder = { BaseText(text = placeholder, textColor = TextGrey) },
+        singleLine = isSingleLine,
+        modifier = FullWidthModifier.then(modifier),
+        colors = textFieldColors(),
+        isError = isError
+    )
+}
+

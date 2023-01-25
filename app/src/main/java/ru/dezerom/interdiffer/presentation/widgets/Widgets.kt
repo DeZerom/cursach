@@ -75,7 +75,7 @@ fun EmptyListWidget(
 @Composable
 fun FullWidthButton(
     text: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     Button(
