@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PeopleViewModel @Inject constructor(
-    private val usersRepository: VkUsersRepository
+    private val vkUsersRepository: VkUsersRepository
 ): BaseViewModel() {
 
     private val _viewState =
@@ -35,19 +35,7 @@ class PeopleViewModel @Inject constructor(
     }
 
     override suspend fun fetchInfoAndProcessResult(): Boolean {
-        setProgress(true)
-
-        return when (val result = usersRepository.getSavedUsers()) {
-            is RequestResult.Success -> {
-                _viewState.value = PeopleScreenState.ShowingList(result.data)
-                true
-            }
-            is RequestResult.Error.VkError -> {
-                handleVkError(result.type)
-                true
-            }
-            else -> false
-        }
+        return getVkUsers()
     }
 
     fun onAddButtonClick() = viewModelScope.launch {
@@ -55,7 +43,20 @@ class PeopleViewModel @Inject constructor(
     }
 
     fun onUserAddButtonClick(userId: String) {
-        setToastText(userId)
+        viewModelScope.launch {
+            setProgress()
+
+            when (val result = vkUsersRepository.addUserByScreenName(userId)) {
+                is RequestResult.Success -> {
+                    if (!getVkUsers())
+                        handleUnknownError()
+                }
+                is RequestResult.Error.VkError ->
+                    handleVkError(result.type)
+
+                else -> handleUnknownError()
+            }
+        }
     }
 
     fun onItemClick(item: VkUserModel) = viewModelScope.launch {
@@ -68,5 +69,21 @@ class PeopleViewModel @Inject constructor(
 
     fun onInfoCircleClick() = viewModelScope.launch {
         _sideEffect.forceSend(PeopleScreenSideEffect.ShowInfoCirclesDescription)
+    }
+
+    private suspend fun getVkUsers(): Boolean {
+        setProgress()
+
+        return when (val result = vkUsersRepository.getSavedUsers()) {
+            is RequestResult.Success -> {
+                _viewState.value = PeopleScreenState.ShowingList(result.data)
+                true
+            }
+            is RequestResult.Error.VkError -> {
+                handleVkError(result.type)
+                true
+            }
+            else -> false
+        }
     }
 }

@@ -19,16 +19,19 @@ abstract class BaseViewModel: ViewModel() {
 
     abstract fun onCriticalErrorClick()
 
-    protected fun setProgress(isInProgress: Boolean) {
-        _baseScreenState.value = if (isInProgress) BaseScreenState.Loading
-        else BaseScreenState.ShowingInfo
+    protected fun setProgress() {
+        _baseScreenState.value = BaseScreenState.Loading
     }
 
     protected fun getInfo() = viewModelScope.launch {
         if (fetchInfoAndProcessResult())
             _baseScreenState.value = BaseScreenState.ShowingInfo
         else
-            _baseScreenState.value = BaseScreenState.ShowUnknownError
+            handleUnknownError()
+    }
+
+    protected fun handleUnknownError() {
+        _baseScreenState.value = BaseScreenState.ShowUnknownError
     }
 
     protected abstract suspend fun fetchInfoAndProcessResult(): Boolean
