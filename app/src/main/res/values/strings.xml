@@ -12,6 +12,7 @@
     <string name="delete">Удалить</string>
     <string name="birthDate">Дата рождения: %s</string>
     <string name="back">Назад</string>
+    <string name="info_circles_description">Описание значков</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>
@@ -34,5 +35,12 @@
     <string name="private_profile_message">У этого пользователя приватный профиль, доступа к информации нет</string>
     <string name="wrong_identifier">Неверный идентификатор</string>
     <string name="wrong_identifier_message">Убедитесь, что правильно ввели информацию</string>
+
+    <!-- Info circles description -->
+    <string name="sixteen_age_limit">Это сообщество имеет возрастное ограничение 16+</string>
+    <string name="eighteen_age_limit">Это сообщество имеет возрастное ограничение 18+</string>
+    <string name="closed_info_circle">Страница этого пользователя/сообщества закрыта от публичного доступа</string>
+    <string name="deleted_info_circle">Страница этого пользователя/сообщества удалена</string>
+    <string name="banned_info_circle">Страница этого пользователя/сообщества забанена</string>
 
 </resources>

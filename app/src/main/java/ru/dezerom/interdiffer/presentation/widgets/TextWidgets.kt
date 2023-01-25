@@ -57,6 +57,21 @@ fun BaseCenteredText(
 }
 
 @Composable
+fun BaseText(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = textColor,
+        fontSize = Dimens.FontSizes.base,
+        fontWeight = FontWeight.Medium
+    )
+}
+
+@Composable
 fun BaseSmallText(
     text: String,
     modifier: Modifier = Modifier,

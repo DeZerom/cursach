@@ -2,13 +2,16 @@ package ru.dezerom.interdiffer.presentation.sreens.people
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
+import ru.dezerom.interdiffer.presentation.utils.forceSend
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +22,9 @@ class PeopleViewModel @Inject constructor(
     private val _viewState =
         MutableStateFlow<PeopleScreenState>(PeopleScreenState.ShowingList(listOf()))
     val viewState = _viewState.asStateFlow()
+
+    private val _sideEffect = Channel<PeopleScreenSideEffect?>(Channel.BUFFERED)
+    val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
         getInfo()
@@ -56,7 +62,7 @@ class PeopleViewModel @Inject constructor(
         setToastText("delete")
     }
 
-    fun onInfoCircleClick() {
-        setToastText("Some info dialog here")
+    fun onInfoCircleClick() = viewModelScope.launch {
+        _sideEffect.forceSend(PeopleScreenSideEffect.ShowInfoCirclesDescription)
     }
 }

@@ -1,15 +1,28 @@
 package ru.dezerom.interdiffer.presentation.sreens.people
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
-import ru.dezerom.interdiffer.presentation.widgets.*
+import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
+import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
+import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget
 
 @Composable
 fun PeopleScreen(viewModel: PeopleViewModel) {
     val viewState: PeopleScreenState by viewModel.viewState.collectAsState()
+    val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
+
+    when (sideEffect.value) {
+        is PeopleScreenSideEffect.ShowInfoCirclesDescription -> {
+            val showState = remember { mutableStateOf(true) }
+            showState.value = true
+
+            InfoCirclesDescriptionDialogScreen(showState)
+        }
+
+        null -> {}
+    }
 
     BaseScreen(viewModel = viewModel) {
         when (viewState) {
