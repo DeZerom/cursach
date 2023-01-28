@@ -15,5 +15,9 @@ fun RequestBody?.bodyToString(): String {
 fun RequestBody?.add(key: String, value: String): RequestBody {
     val requestString = bodyToString()
 
-    return RequestBody.create(this?.contentType(), "$requestString&$key=$value")
+    val newRequestBody = StringBuilder(requestString)
+        .append("&\"$key\"=\"$value\"")
+        .toString()
+
+    return RequestBody.create(this?.contentType(), newRequestBody)
 }

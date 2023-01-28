@@ -1,23 +1,38 @@
 package ru.dezerom.interdiffer.app.di
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.dezerom.interdiffer.data.network.apis.UsersApiService
-import ru.dezerom.interdiffer.data.network.interceptors.BodyIntercepter
+import ru.dezerom.interdiffer.data.network.interceptors.AuthInterceptor
+import ru.dezerom.interdiffer.data.network.interceptors.VersionInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
 class RetrofitProvider {
 
     @Provides
-    fun provideOkHttpClient(interceptor: BodyIntercepter): OkHttpClient =
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        versionInterceptor: VersionInterceptor,
+        chuckerInterceptor: ChuckerInterceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(interceptor)
+            .addInterceptor(authInterceptor)
+            .addInterceptor(versionInterceptor)
+            .addInterceptor(chuckerInterceptor)
+            .build()
+
+    @Provides
+    fun provideChuckerInterceptor(@ApplicationContext context: Context): ChuckerInterceptor =
+        ChuckerInterceptor.Builder(context)
             .build()
 
     @Provides

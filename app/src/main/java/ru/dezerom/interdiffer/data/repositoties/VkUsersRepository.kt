@@ -1,47 +1,49 @@
 package ru.dezerom.interdiffer.data.repositoties
 
-import kotlinx.coroutines.delay
+import ru.dezerom.interdiffer.data.data_base.dao.VkUsersDao
+import ru.dezerom.interdiffer.data.models.VkUserDataModel
 import ru.dezerom.interdiffer.data.network.apis.UsersApiService
-import ru.dezerom.interdiffer.data.network.requests.UserRequest
+import ru.dezerom.interdiffer.data.utils.safeDaoAction
+import ru.dezerom.interdiffer.data.utils.safeDaoCall
 import ru.dezerom.interdiffer.data.utils.safeVkApiCall
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.mappers.toDomain
-import timber.log.Timber
 import javax.inject.Inject
 
 class VkUsersRepository @Inject constructor(
-    private val usersApiService: UsersApiService
+    private val usersApiService: UsersApiService,
+    private val vkUsersDao: VkUsersDao
 ) {
 
-    //todo размокать
     suspend fun getSavedUsers(): RequestResult<List<VkUserModel>> {
-        delay(2000)
-
-        return RequestResult.Success(emptyList())
+        return safeDaoCall {
+            vkUsersDao.getAllVkUsers()?.map { it.toDomain() }
+        }
     }
 
     suspend fun addUserByScreenName(userScreenName: String): RequestResult<Boolean> {
         val result = safeVkApiCall(
             call = {
                 usersApiService.getUserInfo(
-                    body = UserRequest(
-                        screenNames = listOf(userScreenName),
-                        fields = USER_DEFAULT_FIELDS
-                    )
+                    ids = listOf(userScreenName),
+                    fields = USER_DEFAULT_FIELDS
                 )
             },
-            successMapper = { it.data?.firstOrNull()?.toDomain() }
+            successMapper = { it.data?.firstOrNull() }
         )
 
         return when (result) {
             is RequestResult.Error -> result
             is RequestResult.Success -> {
-                val user = result.data
-                Timber.e("$user")
-
-                RequestResult.Success(true)
+                RequestResult.Success(writeVkUserToDb(result.data))
             }
+        }
+    }
+
+    private suspend fun writeVkUserToDb(vkUser: VkUserDataModel): Boolean {
+        return safeDaoAction {
+            vkUsersDao.insertVkUser(vkUser)
         }
     }
 

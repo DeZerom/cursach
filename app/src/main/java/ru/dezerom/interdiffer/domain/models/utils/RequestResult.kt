@@ -7,6 +7,7 @@ sealed class RequestResult<out T> {
     sealed class Error: RequestResult<Nothing>() {
         object Network: Error()
 
+        object RoomError: Error()
         class VkError(val type: VkErrorType): Error()
     }
 }

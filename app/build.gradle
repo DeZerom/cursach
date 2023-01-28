@@ -84,6 +84,10 @@ dependencies {
 
     //timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 }
 
 // Allow references to generated code
