@@ -11,7 +11,7 @@ class AuthInterceptor @Inject constructor(): Interceptor {
 
         val newRequest = request.newBuilder()
             .headers(
-                request.headers().newBuilder()
+                request.headers.newBuilder()
                     .add(ACCESS_TOKEN)
                     .build()
             )

@@ -11,7 +11,7 @@ class LangInterceptor @Inject constructor(): Interceptor {
 
         val newRequest = request.newBuilder()
             .url(
-                request.url().newBuilder()
+                request.url.newBuilder()
                     .addQueryParameter(LANG_KEY, LANG)
                     .build()
             )

@@ -13,13 +13,13 @@ class VersionInterceptor @Inject constructor(): Interceptor {
 
         val newRequest = request.newBuilder()
             .url(
-                request.url().newBuilder()
+                request.url.newBuilder()
                     .addQueryParameter(VERSION_KEY, VERSION)
                     .build()
             )
             .build()
 
-        Timber.i(newRequest.body().bodyToString())
+        Timber.i(newRequest.body.bodyToString())
 
         return chain.proceed(newRequest)
     }

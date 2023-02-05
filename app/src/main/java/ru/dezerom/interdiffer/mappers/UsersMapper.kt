@@ -12,5 +12,7 @@ fun VkUserDataModel.toDomain() =
         lastName = lastName ?: "",
         isClosed = isClosed == true,
         deactivationType = DeactivationType.fromString(deactivated),
-        birthDate = birthDate.toPartialDate()
+        birthDate = birthDate.toPartialDate(),
+        photo100 = photo100 ?: "",
+        photo200 = photo200 ?: ""
     )

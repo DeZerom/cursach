@@ -3,6 +3,7 @@ package ru.dezerom.interdiffer.data.utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
+import timber.log.Timber
 
 suspend fun <T> safeDaoCall(
     daoCall: suspend () -> T?
@@ -17,6 +18,7 @@ suspend fun <T> safeDaoCall(
                 RequestResult.Success(result)
             }
         } catch (e: Exception) {
+            Timber.e(e)
             RequestResult.Error.RoomError
         }
     }

@@ -1,0 +1,168 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b869215cfccd6dc1e40a7e410d858406",
+    "entities": [
+      {
+        "tableName": "VkUserDataModel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `firstName` TEXT, `lastName` TEXT, `isClosed` INTEGER, `deactivated` TEXT, `birthDate` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "firstName",
+            "columnName": "firstName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastName",
+            "columnName": "lastName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isClosed",
+            "columnName": "isClosed",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deactivated",
+            "columnName": "deactivated",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "birthDate",
+            "columnName": "birthDate",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "SocietyDataModel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `userId` INTEGER, `name` TEXT, `isClosed` INTEGER, `deactivated` TEXT, `type` TEXT, `photo100` TEXT, `photo200` TEXT, `activity` TEXT, `ageLimits` INTEGER, `description` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`id`) REFERENCES `VkUserDataModel`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isClosed",
+            "columnName": "isClosed",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deactivated",
+            "columnName": "deactivated",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photo100",
+            "columnName": "photo100",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "photo200",
+            "columnName": "photo200",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "activity",
+            "columnName": "activity",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ageLimits",
+            "columnName": "ageLimits",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "user_society_index",
+            "unique": false,
+            "columnNames": [
+              "userId"
+            ],
+            "orders": [
+              "ASC"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `user_society_index` ON `${TABLE_NAME}` (`userId` ASC)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "VkUserDataModel",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b869215cfccd6dc1e40a7e410d858406')"
+    ]
+  }
+}

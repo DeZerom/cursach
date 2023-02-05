@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import coil.compose.AsyncImage
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
@@ -17,6 +19,7 @@ import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
 import ru.dezerom.interdiffer.presentation.widgets.BaseCenteredText
 import ru.dezerom.interdiffer.presentation.widgets.BaseSmallText
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthCard
+import ru.dezerom.interdiffer.ui.theme.Shapes
 
 @Composable
 fun VkUserItem(
@@ -38,10 +41,14 @@ fun VkUserItem(
                 modifier = MaxSizeModifier
                     .align(Alignment.TopStart)
             ) {
-                Image(
-                    modifier = Modifier.size(Dimens.Sizes.smallPhotoSize),
-                    painter = painterResource(id = R.drawable.ic_people),
-                    contentDescription = null
+                AsyncImage(
+                    model = model.photo100,
+                    contentDescription = null,
+                    placeholder = painterResource(id = R.drawable.ic_people),
+                    error = painterResource(id = R.drawable.ic_people),
+                    modifier = Modifier
+                        .size(Dimens.Sizes.smallPhotoSize)
+                        .clip(Shapes.small)
                 )
 
                 Box(

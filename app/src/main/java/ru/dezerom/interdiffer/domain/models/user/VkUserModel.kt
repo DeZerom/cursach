@@ -12,7 +12,9 @@ data class VkUserModel(
     val lastName: String,
     val isClosed: Boolean,
     val deactivationType: DeactivationType,
-    val birthDate: PartialDate?
+    val birthDate: PartialDate?,
+    val photo100: String,
+    val photo200: String
 ): Parcelable {
     val fullName: String
         get() = "$firstName $lastName"

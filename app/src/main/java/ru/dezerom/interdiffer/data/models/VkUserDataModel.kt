@@ -31,5 +31,13 @@ data class VkUserDataModel(
 
     @Expose
     @SerializedName("bdate")
-    val birthDate: String? = null
+    val birthDate: String? = null,
+
+    @Expose
+    @SerializedName("photo_100")
+    val photo100: String? = null,
+
+    @Expose
+    @SerializedName("photo_200")
+    val photo200: String? = null
 )
