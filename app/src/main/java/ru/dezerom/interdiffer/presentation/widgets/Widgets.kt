@@ -14,7 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.interdiffer.R
-import ru.dezerom.interdiffer.presentation.utils.*
+import ru.dezerom.interdiffer.presentation.utils.FullWidthCardModifier
+import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
+import ru.dezerom.interdiffer.presentation.utils.FullWidthTextModifier
+import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.ui.theme.Grey
 import ru.dezerom.interdiffer.ui.theme.Orange
 import ru.dezerom.interdiffer.ui.theme.Shapes

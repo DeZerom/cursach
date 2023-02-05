@@ -14,8 +14,8 @@ import ru.dezerom.interdiffer.presentation.dialogs.AddVkUserDialog
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
-import ru.dezerom.interdiffer.presentation.utils.Dimens
 import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget

@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.interdiffer.R
-import ru.dezerom.interdiffer.presentation.utils.Dimens
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.widgets.BaseFullWidthTextInput
 import ru.dezerom.interdiffer.presentation.widgets.BoldExtraBigText
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthButton

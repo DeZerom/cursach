@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ru.dezerom.interdiffer.presentation.utils.Dimens
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 
 val Shapes = Shapes(
     small = RoundedCornerShape(10.dp),

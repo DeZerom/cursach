@@ -14,8 +14,8 @@ import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.utils.toDayMonthYearString
-import ru.dezerom.interdiffer.presentation.utils.Dimens
 import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.widgets.BaseCenteredText
 import ru.dezerom.interdiffer.presentation.widgets.BaseSmallText
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthCard

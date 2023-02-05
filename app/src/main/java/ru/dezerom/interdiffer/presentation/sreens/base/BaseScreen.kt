@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.interdiffer.R
-import ru.dezerom.interdiffer.presentation.utils.Dimens
 import ru.dezerom.interdiffer.presentation.utils.FullWidthCardModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthTextModifier
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.widgets.BaseBigCenteredText
 import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthButton

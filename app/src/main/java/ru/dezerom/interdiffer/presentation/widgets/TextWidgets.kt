@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import ru.dezerom.interdiffer.presentation.utils.Dimens
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.ui.theme.TextGrey
 import ru.dezerom.interdiffer.ui.theme.textFieldColors
 

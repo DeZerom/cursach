@@ -1,4 +1,4 @@
-package ru.dezerom.interdiffer.presentation.utils
+package ru.dezerom.interdiffer.presentation.utils.res
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp

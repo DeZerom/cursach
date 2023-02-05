@@ -18,17 +18,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.dezerom.interdiffer.presentation.sreens.comparisons.ComparisonsScreen
-import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
-import ru.dezerom.interdiffer.presentation.utils.*
+import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
+import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
+import ru.dezerom.interdiffer.presentation.utils.isRootDestination
+import ru.dezerom.interdiffer.presentation.utils.res.Dimens
+import ru.dezerom.interdiffer.presentation.utils.res.destinations.RootNavDestinations
+import ru.dezerom.interdiffer.presentation.utils.res.navhost.MainNavHost
+import ru.dezerom.interdiffer.presentation.utils.toPresentationNavDestination
 import ru.dezerom.interdiffer.presentation.widgets.BaseCenteredText
 import ru.dezerom.interdiffer.presentation.widgets.BoldExtraBigText
 import ru.dezerom.interdiffer.ui.theme.InterDifferTheme
@@ -48,14 +50,7 @@ class MainActivity : ComponentActivity() {
                     topBar = { TopBar(navController = navController) },
                     bottomBar = { BottomBar(navController = navController) }
                 ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = NavDestinations.People.route,
-                        modifier = Modifier.padding(it))
-                    {
-                        composable(NavDestinations.People.route) { PeopleScreen(hiltViewModel()) }
-                        composable(NavDestinations.Comparisons.route) { ComparisonsScreen() }
-                    }
+                    MainNavHost(navController = navController, modifier = Modifier.padding(it))
                 }
             }
         }
@@ -84,7 +79,8 @@ fun TopBar(navController: NavController) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_back),
                         contentDescription = stringResource(R.string.back),
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
                             .clickable { navController.popBackStack() }
                     )
                 }
@@ -109,8 +105,8 @@ fun BottomBar(navController: NavController) {
         val currentDestination = navBackStackEntry?.destination
 
         val items = listOf(
-            NavDestinations.People,
-            NavDestinations.Comparisons
+            RootNavDestinations.People,
+            RootNavDestinations.Comparisons
         )
 
         Card(
@@ -122,7 +118,9 @@ fun BottomBar(navController: NavController) {
         ) {
             Row {
                 items.forEach {
-                    val isSelected = it.route == currentDestination?.route
+                    val isSelected = currentDestination?.hierarchy?.any {navDestination ->
+                        navDestination.route == it.route
+                    } == true
 
                     BottomNavigationItem(
                         selected = isSelected,
