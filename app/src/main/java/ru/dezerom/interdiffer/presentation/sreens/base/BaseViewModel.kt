@@ -1,13 +1,11 @@
 package ru.dezerom.interdiffer.presentation.sreens.base
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import ru.dezerom.interdiffer.domain.models.utils.VkErrorType
+import ru.dezerom.interdiffer.domain.models.utils.HandleableError
 
 abstract class BaseViewModel: ViewModel() {
 
@@ -19,29 +17,26 @@ abstract class BaseViewModel: ViewModel() {
 
     abstract fun onCriticalErrorClick()
 
-    protected fun setProgress() {
-        _baseScreenState.value = BaseScreenState.Loading
-    }
-
-    protected fun getInfo() = viewModelScope.launch {
-        if (fetchInfoAndProcessResult())
-            _baseScreenState.value = BaseScreenState.ShowingInfo
+    protected fun setProgressOrContent(isProgress: Boolean) {
+        if (isProgress)
+            _baseScreenState.value = BaseScreenState.Loading
         else
-            handleUnknownError()
+            _baseScreenState.value = BaseScreenState.ShowingInfo
     }
 
     protected fun handleUnknownError() {
-        _baseScreenState.value = BaseScreenState.ShowUnknownError
+        _baseScreenState.value = BaseScreenState.showUnknownError()
     }
 
-    protected abstract suspend fun fetchInfoAndProcessResult(): Boolean
-
-    protected fun setToastText(text: String) = viewModelScope.launch {
+    protected suspend fun setToastText(text: String) {
         _baseSideEffect.send(BaseSideEffect.ShowToast(text))
     }
 
-    protected fun handleVkError(type: VkErrorType) {
-        _baseScreenState.value = BaseScreenState.ShowingError(type.title, type.message)
+    protected fun handleError(
+        type: HandleableError
+    ) {
+        _baseScreenState.value =
+            BaseScreenState.ShowingError(type.title, type.message)
     }
 
 }

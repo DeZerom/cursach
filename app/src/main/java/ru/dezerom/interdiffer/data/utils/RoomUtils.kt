@@ -12,7 +12,7 @@ suspend fun <T> safeDaoCall(
             val result = daoCall()
 
             if (result == null) {
-                RequestResult.Error.RoomError
+                RequestResult.Error.NothingFoundError
             } else {
                 RequestResult.Success(result)
             }

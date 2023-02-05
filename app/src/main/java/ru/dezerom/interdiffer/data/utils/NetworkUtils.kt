@@ -8,7 +8,8 @@ import ru.dezerom.interdiffer.domain.models.utils.VkErrorType
 
 suspend fun <T: VkErrorContainer, R> safeVkApiCall(
     call: suspend () -> T?,
-    successMapper: (T) -> R?
+    successMapper: (T) -> R?,
+    onNullValue: () -> RequestResult<R> = { RequestResult.Error.Network }
 ): RequestResult<R> {
     return withContext(Dispatchers.IO) {
         try {
@@ -21,7 +22,7 @@ suspend fun <T: VkErrorContainer, R> safeVkApiCall(
                     if (result != null)
                         RequestResult.Success(result)
                     else
-                        RequestResult.Error.Network
+                        onNullValue()
                 } else {
                     RequestResult.Error.VkError(VkErrorType.fromCode(callResult.vkError?.errorCode))
                 }

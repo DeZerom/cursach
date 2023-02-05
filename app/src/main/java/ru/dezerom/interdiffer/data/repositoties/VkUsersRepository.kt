@@ -30,7 +30,8 @@ class VkUsersRepository @Inject constructor(
                     fields = USER_DEFAULT_FIELDS
                 )
             },
-            successMapper = { it.data?.firstOrNull() }
+            successMapper = { it.data?.firstOrNull() },
+            onNullValue = { RequestResult.Error.NothingFoundError }
         )
 
         return when (result) {

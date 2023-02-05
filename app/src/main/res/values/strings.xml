@@ -39,6 +39,8 @@
     <string name="wrong_identifier">Неверный идентификатор</string>
     <string name="wrong_identifier_message">Убедитесь, что правильно ввели информацию</string>
     <string name="field_should_not_be_blank">Поле не должно быть пустым</string>
+    <string name="nothing_found_error_title">Ничего не найдено</string>
+    <string name="nothing_found_error_message">Убедитесь в правильности запроса</string>
 
     <!-- Info circles description -->
     <string name="sixteen_age_limit">Это сообщество имеет возрастное ограничение 16+</string>

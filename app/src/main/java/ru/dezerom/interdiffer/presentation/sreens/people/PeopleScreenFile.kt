@@ -1,13 +1,25 @@
 package ru.dezerom.interdiffer.presentation.sreens.people
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.presentation.dialogs.AddVkUserDialog
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
+import ru.dezerom.interdiffer.presentation.utils.Dimens
+import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
 import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget
+import ru.dezerom.interdiffer.ui.theme.Orange
 
 @Composable
 fun PeopleScreen(viewModel: PeopleViewModel) {
@@ -58,18 +70,35 @@ private fun ShowListState(
             EmptyListWidget { viewModel.onAddButtonClick() }
         }
     } else {
-        BaseLazyColumn {
-            items(
-                count = items.size,
-                key = { items[it].id }
-            ) { 
-                val item = items[it]
+        Box(modifier = MaxSizeModifier) {
+            BaseLazyColumn {
+                items(
+                    count = items.size,
+                    key = { items[it].id }
+                ) {
+                    val item = items[it]
 
-                VkUserItem(
-                    model = item,
-                    onClick = viewModel::onItemClick,
-                    onInfoCircleClick = viewModel::onInfoCircleClick,
-                    onDeleteCircleClick = viewModel::onItemDeleteClick
+                    VkUserItem(
+                        model = item,
+                        onClick = viewModel::onItemClick,
+                        onInfoCircleClick = viewModel::onInfoCircleClick,
+                        onDeleteCircleClick = viewModel::onItemDeleteClick
+                    )
+                }
+            }
+
+            FloatingActionButton(
+                onClick = viewModel::onAddButtonClick,
+                backgroundColor = Orange,
+                modifier = Modifier.align(Alignment.BottomEnd)
+                    .padding(
+                        end = Dimens.Paddings.smallPadding,
+                        bottom = Dimens.Paddings.smallPadding
+                    )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = stringResource(id = R.string.add)
                 )
             }
         }

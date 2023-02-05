@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
+import ru.dezerom.interdiffer.domain.models.utils.HandleableError
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import ru.dezerom.interdiffer.presentation.utils.forceSend
@@ -27,15 +28,15 @@ class PeopleViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
-        getInfo()
+        viewModelScope.launch {
+            getVkUsers()
+        }
     }
 
     override fun onCriticalErrorClick() {
-        setToastText("qweqwe")
-    }
-
-    override suspend fun fetchInfoAndProcessResult(): Boolean {
-        return getVkUsers()
+        viewModelScope.launch {
+            getVkUsers()
+        }
     }
 
     fun onAddButtonClick() = viewModelScope.launch {
@@ -44,15 +45,17 @@ class PeopleViewModel @Inject constructor(
 
     fun onUserAddButtonClick(userId: String) {
         viewModelScope.launch {
-            setProgress()
+            setProgressOrContent(true)
 
             when (val result = vkUsersRepository.addUserByScreenName(userId)) {
                 is RequestResult.Success -> {
-                    if (!getVkUsers())
+                    if (result.data)
+                        getVkUsers()
+                    else
                         handleUnknownError()
                 }
-                is RequestResult.Error.VkError ->
-                    handleVkError(result.type)
+                is HandleableError ->
+                    handleError(result)
 
                 else -> handleUnknownError()
             }
@@ -64,26 +67,28 @@ class PeopleViewModel @Inject constructor(
     }
 
     fun onItemDeleteClick(item: VkUserModel) {
-        setToastText("delete")
+        viewModelScope.launch {
+            setToastText("delete")
+        }
     }
 
     fun onInfoCircleClick() = viewModelScope.launch {
         _sideEffect.forceSend(PeopleScreenSideEffect.ShowInfoCirclesDescription)
     }
 
-    private suspend fun getVkUsers(): Boolean {
-        setProgress()
+    private suspend fun getVkUsers() {
+        setProgressOrContent(true)
 
-        return when (val result = vkUsersRepository.getSavedUsers()) {
+        when (val result = vkUsersRepository.getSavedUsers()) {
             is RequestResult.Success -> {
                 _viewState.value = PeopleScreenState.ShowingList(result.data)
-                true
+                setProgressOrContent(false)
             }
-            is RequestResult.Error.VkError -> {
-                handleVkError(result.type)
-                true
+            is HandleableError -> {
+                handleError(result)
             }
-            else -> false
+
+            else -> handleUnknownError()
         }
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,10 @@ import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
 import ru.dezerom.interdiffer.presentation.utils.*
 import ru.dezerom.interdiffer.presentation.widgets.BaseCenteredText
 import ru.dezerom.interdiffer.presentation.widgets.BoldExtraBigText
-import ru.dezerom.interdiffer.ui.theme.*
+import ru.dezerom.interdiffer.ui.theme.InterDifferTheme
+import ru.dezerom.interdiffer.ui.theme.Orange
+import ru.dezerom.interdiffer.ui.theme.bottomRoundedShape
+import ru.dezerom.interdiffer.ui.theme.topRoundedShape
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -81,6 +85,7 @@ fun TopBar(navController: NavController) {
                         painter = painterResource(id = R.drawable.ic_back),
                         contentDescription = stringResource(R.string.back),
                         modifier = Modifier.align(Alignment.CenterStart)
+                            .clickable { navController.popBackStack() }
                     )
                 }
 

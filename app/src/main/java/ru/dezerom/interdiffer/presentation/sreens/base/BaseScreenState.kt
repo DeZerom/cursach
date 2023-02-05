@@ -9,9 +9,16 @@ sealed interface BaseScreenState {
 
     object Loading: BaseScreenState
 
-    class ShowingError(@StringRes val title: Int, @StringRes val message: Int): BaseScreenState
+    class ShowingError(
+        @StringRes val title: Int,
+        @StringRes val message: Int
+    ): BaseScreenState
 
     companion object {
-        val ShowUnknownError = ShowingError(R.string.unknown_error, R.string.unknown_error_message)
+        fun showUnknownError() =
+            ShowingError(
+                R.string.unknown_error,
+                R.string.unknown_error_message,
+            )
     }
 }

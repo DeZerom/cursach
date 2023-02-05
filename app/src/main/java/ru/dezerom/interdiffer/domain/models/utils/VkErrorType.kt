@@ -3,7 +3,10 @@ package ru.dezerom.interdiffer.domain.models.utils
 import androidx.annotation.StringRes
 import ru.dezerom.interdiffer.R
 
-enum class VkErrorType(@StringRes val title: Int, @StringRes val message: Int) {
+enum class VkErrorType(
+    @StringRes val title: Int,
+    @StringRes val message: Int
+) {
     UNKNOWN(R.string.unknown_error, R.string.unknown_error_message),
     APP_IS_OFF(R.string.app_is_off, R.string.app_is_off_message),
     REQUESTS_LIMIT(R.string.request_limit, R.string.request_limit_message),
