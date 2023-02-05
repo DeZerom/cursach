@@ -1,9 +1,6 @@
 package ru.dezerom.interdiffer.data.data_base.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import ru.dezerom.interdiffer.data.models.VkUserDataModel
 
 @Dao
@@ -14,5 +11,8 @@ interface VkUsersDao {
 
     @Query("SELECT * FROM VkUserDataModel")
     suspend fun getAllVkUsers(): List<VkUserDataModel>?
+
+    @Query("DELETE FROM VkUserDataModel WHERE id = :id")
+    suspend fun deleteVkUser(id: Int)
 
 }

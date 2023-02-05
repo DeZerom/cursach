@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.HandleableError
@@ -29,13 +30,13 @@ class PeopleViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getVkUsers()
+            refreshVkUsersList()
         }
     }
 
     override fun onCriticalErrorClick() {
         viewModelScope.launch {
-            getVkUsers()
+            refreshVkUsersList()
         }
     }
 
@@ -50,7 +51,7 @@ class PeopleViewModel @Inject constructor(
             when (val result = vkUsersRepository.addUserByScreenName(userId)) {
                 is RequestResult.Success -> {
                     if (result.data)
-                        getVkUsers()
+                        refreshVkUsersList()
                     else
                         handleUnknownError()
                 }
@@ -68,7 +69,12 @@ class PeopleViewModel @Inject constructor(
 
     fun onItemDeleteClick(item: VkUserModel) {
         viewModelScope.launch {
-            setToastText("delete")
+            val result = vkUsersRepository.deleteVkUser(item.id)
+
+            if (result)
+                refreshVkUsersList()
+            else
+                setToastText(R.string.something_went_wrong)
         }
     }
 
@@ -76,7 +82,7 @@ class PeopleViewModel @Inject constructor(
         _sideEffect.forceSend(PeopleScreenSideEffect.ShowInfoCirclesDescription)
     }
 
-    private suspend fun getVkUsers() {
+    private suspend fun refreshVkUsersList() {
         setProgressOrContent(true)
 
         when (val result = vkUsersRepository.getSavedUsers()) {

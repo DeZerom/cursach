@@ -33,7 +33,14 @@ fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
     when (val se = sideEffect.value) {
         is BaseSideEffect.ShowToast -> {
             val context = LocalContext.current
-            Toast.makeText(context, se.text, Toast.LENGTH_SHORT).show()
+            val text = when (se) {
+                is BaseSideEffect.ShowToast.ByStringRes ->
+                    stringResource(id = se.textRes)
+                is BaseSideEffect.ShowToast.ByText ->
+                    se.text
+            }
+
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
         }
         null -> {}
     }

@@ -42,6 +42,12 @@ class VkUsersRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteVkUser(userId: Int): Boolean {
+        return safeDaoAction {
+            vkUsersDao.deleteVkUser(userId)
+        }
+    }
+
     private suspend fun writeVkUserToDb(vkUser: VkUserDataModel): Boolean {
         return safeDaoAction {
             vkUsersDao.insertVkUser(vkUser)

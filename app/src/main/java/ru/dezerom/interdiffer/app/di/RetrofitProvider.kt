@@ -12,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.dezerom.interdiffer.data.network.apis.UsersApiService
 import ru.dezerom.interdiffer.data.network.interceptors.AuthInterceptor
+import ru.dezerom.interdiffer.data.network.interceptors.LangInterceptor
 import ru.dezerom.interdiffer.data.network.interceptors.VersionInterceptor
 
 @Module
@@ -22,11 +23,13 @@ class RetrofitProvider {
     fun provideOkHttpClient(
         authInterceptor: AuthInterceptor,
         versionInterceptor: VersionInterceptor,
-        chuckerInterceptor: ChuckerInterceptor
+        chuckerInterceptor: ChuckerInterceptor,
+        langInterceptor: LangInterceptor
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(versionInterceptor)
+            .addInterceptor(langInterceptor)
             .addInterceptor(chuckerInterceptor)
             .build()
 

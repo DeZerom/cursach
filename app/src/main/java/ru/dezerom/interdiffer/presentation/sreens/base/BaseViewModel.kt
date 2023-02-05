@@ -1,5 +1,6 @@
 package ru.dezerom.interdiffer.presentation.sreens.base
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,11 @@ abstract class BaseViewModel: ViewModel() {
     }
 
     protected suspend fun setToastText(text: String) {
-        _baseSideEffect.send(BaseSideEffect.ShowToast(text))
+        _baseSideEffect.send(BaseSideEffect.ShowToast.ByText(text))
+    }
+
+    protected suspend fun setToastText(@StringRes textRes: Int) {
+        _baseSideEffect.send(BaseSideEffect.ShowToast.ByStringRes(textRes))
     }
 
     protected fun handleError(
