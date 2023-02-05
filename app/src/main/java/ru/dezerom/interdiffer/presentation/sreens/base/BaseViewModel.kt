@@ -18,6 +18,8 @@ abstract class BaseViewModel: ViewModel() {
 
     abstract fun onCriticalErrorClick()
 
+    abstract fun dropSideEffect()
+
     protected fun setProgressOrContent(isProgress: Boolean) {
         if (isProgress)
             _baseScreenState.value = BaseScreenState.Loading

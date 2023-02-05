@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.presentation.dialogs.AddVkUserDialog
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
@@ -16,17 +17,21 @@ import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
 import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
+import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
 import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget
 import ru.dezerom.interdiffer.ui.theme.Orange
 
 @Composable
-fun PeopleScreen(viewModel: PeopleViewModel) {
+fun PeopleScreen(
+    viewModel: PeopleViewModel,
+    navController: NavController
+) {
     val viewState: PeopleScreenState by viewModel.viewState.collectAsState()
     val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
 
-    when (sideEffect.value) {
+    when (val se = sideEffect.value) {
         is PeopleScreenSideEffect.ShowInfoCirclesDescription -> {
             val showState = remember { mutableStateOf(true) }
             showState.value = true
@@ -40,8 +45,13 @@ fun PeopleScreen(viewModel: PeopleViewModel) {
 
             AddVkUserDialog(
                 showState = showState,
-                onUserAdd = { viewModel.onUserAddButtonClick(it) }
+                onUserAdd = viewModel::onUserAddButtonClick
             )
+        }
+
+        is PeopleScreenSideEffect.NavigateToUserDetails -> {
+            navController.navigate(NestedNavDestinations.VkUserDetails.withArg(se.userId))
+            viewModel.dropSideEffect()
         }
 
         null -> {}
@@ -90,7 +100,8 @@ private fun ShowListState(
             FloatingActionButton(
                 onClick = viewModel::onAddButtonClick,
                 backgroundColor = Orange,
-                modifier = Modifier.align(Alignment.BottomEnd)
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
                     .padding(
                         end = Dimens.Paddings.smallPadding,
                         bottom = Dimens.Paddings.smallPadding

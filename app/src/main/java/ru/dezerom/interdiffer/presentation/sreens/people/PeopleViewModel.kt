@@ -40,6 +40,12 @@ class PeopleViewModel @Inject constructor(
         }
     }
 
+    override fun dropSideEffect() {
+        viewModelScope.launch {
+            _sideEffect.send(null)
+        }
+    }
+
     fun onAddButtonClick() = viewModelScope.launch {
         _sideEffect.forceSend(PeopleScreenSideEffect.ShowAddUserDialog)
     }
@@ -63,8 +69,10 @@ class PeopleViewModel @Inject constructor(
         }
     }
 
-    fun onItemClick(item: VkUserModel) = viewModelScope.launch {
-        setToastText(item.firstName)
+    fun onItemClick(item: VkUserModel) {
+        viewModelScope.launch {
+            _sideEffect.forceSend(PeopleScreenSideEffect.NavigateToUserDetails(item.fullName)) //todo
+        }
     }
 
     fun onItemDeleteClick(item: VkUserModel) {
