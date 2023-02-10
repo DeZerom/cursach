@@ -2,10 +2,10 @@ package ru.dezerom.interdiffer.presentation.sreens.people
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
@@ -25,8 +25,8 @@ class PeopleViewModel @Inject constructor(
         MutableStateFlow<PeopleScreenState>(PeopleScreenState.ShowingList(listOf()))
     val viewState = _viewState.asStateFlow()
 
-    private val _sideEffect = Channel<PeopleScreenSideEffect?>(Channel.BUFFERED)
-    val sideEffect = _sideEffect.receiveAsFlow()
+    private val _sideEffect = MutableSharedFlow<PeopleScreenSideEffect?>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -42,7 +42,7 @@ class PeopleViewModel @Inject constructor(
 
     override fun dropSideEffect() {
         viewModelScope.launch {
-            _sideEffect.send(null)
+            _sideEffect.emit(null)
         }
     }
 
@@ -71,7 +71,7 @@ class PeopleViewModel @Inject constructor(
 
     fun onItemClick(item: VkUserModel) {
         viewModelScope.launch {
-            _sideEffect.forceSend(PeopleScreenSideEffect.NavigateToUserDetails(item.fullName)) //todo
+            _sideEffect.forceSend(PeopleScreenSideEffect.NavigateToUserDetails(item.id))
         }
     }
 

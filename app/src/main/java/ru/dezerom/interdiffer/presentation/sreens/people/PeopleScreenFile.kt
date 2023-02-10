@@ -50,8 +50,9 @@ fun PeopleScreen(
         }
 
         is PeopleScreenSideEffect.NavigateToUserDetails -> {
-            navController.navigate(NestedNavDestinations.VkUserDetails.withArg(se.userId))
-            viewModel.dropSideEffect()
+            LaunchedEffect(key1 = Unit) {
+                navController.navigate(NestedNavDestinations.VkUserDetails.withArg(se.userId))
+            }
         }
 
         null -> {}

@@ -1,8 +1,8 @@
 package ru.dezerom.interdiffer.presentation.utils
 
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 
-suspend fun <E> Channel<E?>.forceSend(element: E) {
-    send(null)
-    send(element)
+suspend fun <E> MutableSharedFlow<E?>.forceSend(element: E) {
+    emit(null)
+    emit(element)
 }

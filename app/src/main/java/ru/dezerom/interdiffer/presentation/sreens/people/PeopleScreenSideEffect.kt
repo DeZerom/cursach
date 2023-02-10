@@ -4,5 +4,5 @@ sealed interface PeopleScreenSideEffect {
     object ShowInfoCirclesDescription: PeopleScreenSideEffect
     object ShowAddUserDialog: PeopleScreenSideEffect
 
-    class NavigateToUserDetails(val userId: String): PeopleScreenSideEffect
+    class NavigateToUserDetails(val userId: Int): PeopleScreenSideEffect
 }

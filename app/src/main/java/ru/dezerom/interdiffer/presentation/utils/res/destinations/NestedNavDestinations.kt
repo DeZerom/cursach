@@ -1,15 +1,14 @@
 package ru.dezerom.interdiffer.presentation.utils.res.destinations
 
 sealed class NestedNavDestinations(
-    val rawRoute: String,
-    val argName: String
+    val rawRoute: String
 ) {
+    abstract val argName: String
 
     object VkUserDetails: NestedNavDestinations(
-        rawRoute = "vk_user_details",
-        argName = "id"
+        rawRoute = "vk_user_details"
     ) {
-        const val ID = "id"
+        override val argName: String = "vk_user_details_screen"
     }
 
     fun asRoute(): String {
@@ -18,7 +17,7 @@ sealed class NestedNavDestinations(
         return "$rawRoute$argsString"
     }
 
-    fun withArg(arg: String) =
-        "$rawRoute/{$arg}"
+    fun withArg(arg: Int) =
+        "$rawRoute/$arg"
 
 }

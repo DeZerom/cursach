@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -40,7 +41,9 @@ fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
                     se.text
             }
 
-            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            LaunchedEffect(key1 = se) {
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            }
         }
         null -> {}
     }

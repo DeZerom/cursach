@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
+import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,10 +15,13 @@ class UserDetailsViewModel @Inject constructor(
 ): BaseViewModel() {
 
     init {
+        Timber.e("init")
         viewModelScope.launch {
-            val name: String = checkNotNull(savedStateHandle["id"])
+            Timber.e("scope")
+            val name: Int =
+                checkNotNull(savedStateHandle[NestedNavDestinations.VkUserDetails.argName])
 
-            setToastText(name)
+            setToastText("$name")
         }
     }
 
