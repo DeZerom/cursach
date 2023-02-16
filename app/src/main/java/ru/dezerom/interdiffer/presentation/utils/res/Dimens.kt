@@ -26,6 +26,8 @@ object Dimens {
 
     object Sizes {
         val smallPhotoSize = 100.dp
+        val bigPhotoSize = 200.dp
+
         val dividerThickness = 1.dp
 
         val defaultCornerRadius = 10.dp

@@ -3,33 +3,66 @@ package ru.dezerom.interdiffer.presentation.sreens.user_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.dezerom.interdiffer.domain.interactors.VkUsersInteractor
+import ru.dezerom.interdiffer.domain.models.user.VkUserModel
+import ru.dezerom.interdiffer.domain.models.utils.RequestResult
+import ru.dezerom.interdiffer.domain.models.utils.handle
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
-): BaseViewModel() {
+    private val savedStateHandle: SavedStateHandle,
+    private val vkUsersInteractor: VkUsersInteractor
+) : BaseViewModel() {
+
+    private val _state = MutableStateFlow<UserDetailsScreenState>(UserDetailsScreenState.Empty)
+    val state = _state.asStateFlow()
+
+    private val userId: Int =
+        checkNotNull(savedStateHandle[NestedNavDestinations.VkUserDetails.argName])
 
     init {
-        Timber.e("init")
-        viewModelScope.launch {
-            Timber.e("scope")
-            val name: Int =
-                checkNotNull(savedStateHandle[NestedNavDestinations.VkUserDetails.argName])
-
-            setToastText("$name")
-        }
+        refreshInfo()
     }
 
     override fun onCriticalErrorClick() {
-        TODO("Not yet implemented")
+        refreshInfo()
     }
 
-    override fun dropSideEffect() {
-        TODO("Not yet implemented")
+    fun onDeleteClick() {
+
+    }
+
+    fun onRefreshClicked() {
+
+    }
+
+    private fun refreshInfo() = viewModelScope.launch {
+        setProgressOrContent(true)
+
+        val userDetails = vkUsersInteractor.getUserInfoById(userId)
+        if (!handleUserDetailsRequestResult(userDetails))
+            return@launch
+
+        setProgressOrContent(false)
+        //todo подгрузка подписок
+    }
+
+    private fun handleUserDetailsRequestResult(requestResult: RequestResult<VkUserModel>): Boolean {
+        var result = false
+        requestResult.handle(
+            onSuccess = {
+                _state.value = UserDetailsScreenState.ShowDetailsOnly(it, true)
+                result = true
+            },
+            onError = { handleError(it) }
+        )
+
+        return result
     }
 }

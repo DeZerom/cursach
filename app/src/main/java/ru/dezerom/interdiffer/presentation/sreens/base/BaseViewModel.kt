@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.dezerom.interdiffer.domain.models.utils.HandleableError
+import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 
 abstract class BaseViewModel: ViewModel() {
 
@@ -17,8 +18,6 @@ abstract class BaseViewModel: ViewModel() {
     val baseScreenState = _baseScreenState.asStateFlow()
 
     abstract fun onCriticalErrorClick()
-
-    abstract fun dropSideEffect()
 
     protected fun setProgressOrContent(isProgress: Boolean) {
         if (isProgress)
@@ -40,10 +39,13 @@ abstract class BaseViewModel: ViewModel() {
     }
 
     protected fun handleError(
-        type: HandleableError
+        error: RequestResult.Error
     ) {
-        _baseScreenState.value =
-            BaseScreenState.ShowingError(type.title, type.message)
+        if (error is HandleableError)
+            _baseScreenState.value =
+                BaseScreenState.ShowingError(error.title, error.message)
+        else
+            handleUnknownError()
     }
 
 }

@@ -15,4 +15,7 @@ interface VkUsersDao {
     @Query("DELETE FROM VkUserDataModel WHERE id = :id")
     suspend fun deleteVkUser(id: Int)
 
+    @Query("SELECT * FROM VkUserDataModel WHERE id = :id")
+    suspend fun getUserById(id: Int): VkUserDataModel?
+
 }

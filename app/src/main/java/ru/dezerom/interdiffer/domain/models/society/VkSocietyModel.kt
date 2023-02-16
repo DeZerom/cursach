@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 
 @Parcelize
-data class SocietyModel(
+data class VkSocietyModel(
     val id: Int,
     val name: String,
     val isClosed: Boolean,

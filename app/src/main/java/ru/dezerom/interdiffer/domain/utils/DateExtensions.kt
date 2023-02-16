@@ -1,5 +1,8 @@
 package ru.dezerom.interdiffer.domain.utils
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.models.utils.PartialDate
 
 fun String?.toPartialDate(): PartialDate? {
@@ -35,4 +38,9 @@ fun PartialDate.toDayMonthYearString(): String {
         "$dayMonthString.$year"
     else
         dayMonthString
+}
+
+@Composable
+fun PartialDate?.toString(): String {
+    return this?.toString() ?: stringResource(id = R.string.not_set)
 }

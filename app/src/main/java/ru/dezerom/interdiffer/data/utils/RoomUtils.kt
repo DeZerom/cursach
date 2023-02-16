@@ -7,13 +7,21 @@ import timber.log.Timber
 
 suspend fun <T> safeDaoCall(
     daoCall: suspend () -> T?
+): RequestResult<T> = safeDaoCall(
+    daoCall = daoCall,
+    onNullValue = { RequestResult.Error.NothingFoundError }
+)
+
+suspend fun <T> safeDaoCall(
+    daoCall: suspend () -> T?,
+    onNullValue: () -> RequestResult<T>
 ): RequestResult<T> {
     return withContext(Dispatchers.IO) {
         try {
             val result = daoCall()
 
             if (result == null) {
-                RequestResult.Error.NothingFoundError
+                onNullValue()
             } else {
                 RequestResult.Success(result)
             }

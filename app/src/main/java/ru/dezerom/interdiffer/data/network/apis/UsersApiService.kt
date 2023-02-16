@@ -2,7 +2,6 @@ package ru.dezerom.interdiffer.data.network.apis
 
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 import ru.dezerom.interdiffer.data.models.VkUserDataModel
 import ru.dezerom.interdiffer.data.network.requests.SocietiesRequest
@@ -12,7 +11,7 @@ import ru.dezerom.interdiffer.data.network.responses.SocietiesResponse
 
 interface UsersApiService {
 
-    @POST("users.getSubscriptions")
+    @GET("users.getSubscriptions")
     suspend fun getUserSubscriptions(
         @Body body: SocietiesRequest
     ): ResponseObjectModel<SocietiesResponse>?

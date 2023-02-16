@@ -1,13 +1,13 @@
 package ru.dezerom.interdiffer.mappers
 
-import ru.dezerom.interdiffer.data.models.SocietyDataModel
+import ru.dezerom.interdiffer.data.models.VkSocietyDataModel
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 import ru.dezerom.interdiffer.domain.models.society.SocietyAgeLimits
-import ru.dezerom.interdiffer.domain.models.society.SocietyModel
 import ru.dezerom.interdiffer.domain.models.society.SocietyType
+import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 
-fun SocietyDataModel.toDomain() =
-    SocietyModel(
+fun VkSocietyDataModel.toDomain() =
+    VkSocietyModel(
         id = id ?: 0,
         name = name ?: "",
         isClosed = isClosed == true,

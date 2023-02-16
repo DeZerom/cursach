@@ -2,6 +2,7 @@ package ru.dezerom.interdiffer.data.network.responses
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ru.dezerom.interdiffer.data.models.VkSocietyDataModel
 
 data class SocietiesResponse(
 
@@ -11,5 +12,5 @@ data class SocietiesResponse(
 
     @Expose
     @SerializedName("items")
-    val societies: List<SocietiesResponse> = emptyList()
+    val societies: List<VkSocietyDataModel> = emptyList()
 )

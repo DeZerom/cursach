@@ -16,13 +16,19 @@ class VkUsersRepository @Inject constructor(
     private val vkUsersDao: VkUsersDao
 ) {
 
+    suspend fun getUserInfoById(id: Int): RequestResult<VkUserModel> {
+        return safeDaoCall {
+            vkUsersDao.getUserById(id)?.toDomain()
+        }
+    }
+
     suspend fun getSavedUsers(): RequestResult<List<VkUserModel>> {
         return safeDaoCall {
             vkUsersDao.getAllVkUsers()?.map { it.toDomain() }
         }
     }
 
-    suspend fun addUserByScreenName(userScreenName: String): RequestResult<Boolean> {
+    suspend fun addUserByScreenName(userScreenName: String): RequestResult<Int> {
         val result = safeVkApiCall(
             call = {
                 usersApiService.getUserInfo(
@@ -37,7 +43,10 @@ class VkUsersRepository @Inject constructor(
         return when (result) {
             is RequestResult.Error -> result
             is RequestResult.Success -> {
-                RequestResult.Success(writeVkUserToDb(result.data))
+                if (RequestResult.Success(writeVkUserToDb(result.data)).data)
+                    RequestResult.Success(result.data.id ?: 0)
+                else
+                    RequestResult.Error.RoomError
             }
         }
     }

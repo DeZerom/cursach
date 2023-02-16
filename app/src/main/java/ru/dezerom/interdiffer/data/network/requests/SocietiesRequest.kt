@@ -11,15 +11,15 @@ data class SocietiesRequest(
 
     @Expose
     @SerializedName("offset")
-    val offset: Int,
+    val offset: Int? = null,
 
     @Expose
     @SerializedName("count")
-    val count: Int,
+    val count: Int? = null,
 
     @Expose
     @SerializedName("fields")
-    val fields: List<String>,
+    val fields: String? = null,
 
     @Expose
     @SerializedName("extended")

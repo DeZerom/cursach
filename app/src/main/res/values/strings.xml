@@ -10,12 +10,16 @@
     <string name="loading_message">Пожалуйста, подождите</string>
     <string name="try_again">Попробовать снова</string>
     <string name="delete">Удалить</string>
+    <string name="refresh">Обновить</string>
     <string name="birthDate">Дата рождения: %s</string>
     <string name="back">Назад</string>
     <string name="info_circles_description">Описание значков</string>
     <string name="user_adding">Добавление человека</string>
     <string name="user_id">Айди пользователя</string>
     <string name="i_am_vk_id">demid_na_rusi</string>
+    <string name="birth_date">Дата рождения: %s</string>
+    <string name="not_set">Не указана</string>
+    <string name="subscriptions_count">Всего подписок: %s</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>
