@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.domain.interactors.VkUsersInteractor
+import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.domain.models.utils.handle
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val vkUsersInteractor: VkUsersInteractor
 ) : BaseViewModel() {
 
@@ -45,24 +46,42 @@ class UserDetailsViewModel @Inject constructor(
     private fun refreshInfo() = viewModelScope.launch {
         setProgressOrContent(true)
 
-        val userDetails = vkUsersInteractor.getUserInfoById(userId)
-        if (!handleUserDetailsRequestResult(userDetails))
-            return@launch
+        val userDetailsResult = vkUsersInteractor.getUserInfoById(userId)
+        val userDetails = handleUserDetailsRequestResult(userDetailsResult) ?: return@launch
 
         setProgressOrContent(false)
-        //todo подгрузка подписок
+
+        val subscriptionsResult = vkUsersInteractor.getUserSubscriptions(userId = userDetails.id)
+        handleSubscriptionsRequestResult(userDetails, subscriptionsResult)
     }
 
-    private fun handleUserDetailsRequestResult(requestResult: RequestResult<VkUserModel>): Boolean {
-        var result = false
+    private fun handleUserDetailsRequestResult(
+        requestResult: RequestResult<VkUserModel>
+    ): VkUserModel? {
+        var result: VkUserModel? = null
         requestResult.handle(
             onSuccess = {
                 _state.value = UserDetailsScreenState.ShowDetailsOnly(it, true)
-                result = true
+                result = it
             },
             onError = { handleError(it) }
         )
 
         return result
+    }
+
+    private fun handleSubscriptionsRequestResult(
+        userDetails: VkUserModel,
+        requestResult: RequestResult<List<VkSocietyModel>>
+    ) {
+        requestResult.handle(
+            onSuccess = {
+                _state.value = UserDetailsScreenState.ShowDetailsAndSocieties(
+                    details = userDetails,
+                    societies = it
+                )
+            },
+            onError = { handleError(it) }
+        )
     }
 }

@@ -29,7 +29,8 @@ fun UserDetailsScreen(viewModel: UserDetailsViewModel) {
         when (val st = state.value) {
             is UserDetailsScreenState.ShowDetailsOnly ->
                 ShowDetailsOnly(viewModel, st)
-            is UserDetailsScreenState.ShowDetailsAndSocieties -> TODO()
+            is UserDetailsScreenState.ShowDetailsAndSocieties ->
+                ShowDetailsAndSocieties(viewModel = viewModel, state = st)
 
             UserDetailsScreenState.Empty -> {}
         }
@@ -53,6 +54,28 @@ private fun ShowDetailsOnly(
             }
         }
     }
+}
+
+@Composable
+private fun ShowDetailsAndSocieties(
+    viewModel: UserDetailsViewModel,
+    state: UserDetailsScreenState.ShowDetailsAndSocieties
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.doublePadding),
+        modifier = Modifier.padding(top = Dimens.Paddings.largePadding)
+    ) {
+        UserDetails(viewModel = viewModel, user = state.details)
+        SocietiesColumn(viewModel = viewModel, state = state)
+    }
+}
+
+@Composable
+private fun SocietiesColumn(
+    viewModel: UserDetailsViewModel,
+    state: UserDetailsScreenState.ShowDetailsAndSocieties
+) {
+
 }
 
 @Composable

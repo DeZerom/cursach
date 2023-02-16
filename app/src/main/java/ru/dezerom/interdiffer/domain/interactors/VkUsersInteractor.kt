@@ -2,6 +2,7 @@ package ru.dezerom.interdiffer.domain.interactors
 
 import ru.dezerom.interdiffer.data.repositoties.VkSocietyRepository
 import ru.dezerom.interdiffer.data.repositoties.VkUsersRepository
+import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import javax.inject.Inject
@@ -31,6 +32,10 @@ class VkUsersInteractor @Inject constructor(
 
     suspend fun deleteVkUser(userId: Int): Boolean {
         return usersRepository.deleteVkUser(userId)
+    }
+
+    suspend fun getUserSubscriptions(userId: Int): RequestResult<List<VkSocietyModel>> {
+        return societiesRepository.getSavedSocieties(userId)
     }
 
 }
