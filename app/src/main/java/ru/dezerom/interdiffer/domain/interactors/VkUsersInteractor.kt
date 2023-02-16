@@ -33,6 +33,4 @@ class VkUsersInteractor @Inject constructor(
         return usersRepository.deleteVkUser(userId)
     }
 
-
-
 }

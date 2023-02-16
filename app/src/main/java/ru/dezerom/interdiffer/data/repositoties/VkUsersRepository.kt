@@ -1,5 +1,6 @@
 package ru.dezerom.interdiffer.data.repositoties
 
+import ru.dezerom.interdiffer.data.data_base.dao.UserSocietyRelationsDao
 import ru.dezerom.interdiffer.data.data_base.dao.VkUsersDao
 import ru.dezerom.interdiffer.data.models.VkUserDataModel
 import ru.dezerom.interdiffer.data.network.apis.UsersApiService
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class VkUsersRepository @Inject constructor(
     private val usersApiService: UsersApiService,
-    private val vkUsersDao: VkUsersDao
+    private val vkUsersDao: VkUsersDao,
+    private val userSocietyRelationsDao: UserSocietyRelationsDao
 ) {
 
     suspend fun getUserInfoById(id: Int): RequestResult<VkUserModel> {
@@ -54,6 +56,7 @@ class VkUsersRepository @Inject constructor(
     suspend fun deleteVkUser(userId: Int): Boolean {
         return safeDaoAction {
             vkUsersDao.deleteVkUser(userId)
+            userSocietyRelationsDao.deleteRelationsByUserId(userId)
         }
     }
 

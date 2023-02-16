@@ -8,7 +8,7 @@ import ru.dezerom.interdiffer.domain.models.DeactivationType
 data class VkSocietyModel(
     val id: Int,
     val name: String,
-    val isClosed: Boolean,
+    val closedType: ClosedType,
     val deactivationType: DeactivationType,
     val type: SocietyType,
     val photo100: String,

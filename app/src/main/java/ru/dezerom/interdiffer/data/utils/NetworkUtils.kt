@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import ru.dezerom.interdiffer.data.network.responses.VkErrorContainer
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.domain.models.utils.VkErrorType
+import timber.log.Timber
 
 suspend fun <T: VkErrorContainer, R> safeVkApiCall(
     call: suspend () -> T?,
@@ -30,6 +31,7 @@ suspend fun <T: VkErrorContainer, R> safeVkApiCall(
                 RequestResult.Error.Network
             }
         } catch (e: Exception) {
+            Timber.e(e)
             RequestResult.Error.Network
         }
     }

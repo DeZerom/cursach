@@ -19,7 +19,7 @@ data class VkSocietyDataModel(
 
     @Expose
     @SerializedName("is_closed")
-    val isClosed: Boolean? = null,
+    val isClosed: Int? = null,
 
     @Expose
     @SerializedName("deactivated")

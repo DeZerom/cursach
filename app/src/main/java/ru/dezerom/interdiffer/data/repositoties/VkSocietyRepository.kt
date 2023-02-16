@@ -5,7 +5,6 @@ import ru.dezerom.interdiffer.data.data_base.dao.VkSocietiesDao
 import ru.dezerom.interdiffer.data.models.UserSocietyRelationDataModel
 import ru.dezerom.interdiffer.data.models.VkSocietyDataModel
 import ru.dezerom.interdiffer.data.network.apis.UsersApiService
-import ru.dezerom.interdiffer.data.network.requests.SocietiesRequest
 import ru.dezerom.interdiffer.data.utils.safeDaoAction
 import ru.dezerom.interdiffer.data.utils.safeDaoCall
 import ru.dezerom.interdiffer.data.utils.safeVkApiCall
@@ -29,12 +28,7 @@ class VkSocietyRepository @Inject constructor(
     suspend fun addUserSocieties(userId: Int): Boolean {
         val countRes = safeVkApiCall(
             call = {
-                usersApiService.getUserSubscriptions(
-                    body = SocietiesRequest(
-                        userId = userId,
-                        extended = false
-                    )
-                )
+                usersApiService.getUserSubscriptions(userId = userId)
             },
             onNullValue = { RequestResult.Error.Network },
             successMapper = { it.data?.count }
@@ -48,13 +42,11 @@ class VkSocietyRepository @Inject constructor(
         val societies = safeVkApiCall(
             call = {
                 usersApiService.getUserSubscriptions(
-                    body = SocietiesRequest(
-                        userId = userId,
-                        offset = 0,
-                        count = count,
-                        fields = SOCIETY_FIELDS,
-                        extended = true
-                    )
+                    userId = userId,
+                    offset = 0,
+                    count = count,
+                    fields = SOCIETY_FIELDS,
+                    extended = true
                 )
             },
             onNullValue = { RequestResult.Error.Network },
@@ -62,22 +54,23 @@ class VkSocietyRepository @Inject constructor(
         )
 
         return if (societies is RequestResult.Success) {
-            writeSocietiesToDb(userId, societies.data)
+            writeSocietiesToDb(societies.data) && changeRelations(userId, societies.data)
         } else {
             false
         }
     }
 
-    private suspend fun writeSocietiesToDb(userId: Int, societies: List<VkSocietyDataModel>): Boolean {
+    private suspend fun writeSocietiesToDb(societies: List<VkSocietyDataModel>): Boolean {
         return safeDaoAction {
             societiesDao.saveSocieties(societies)
-        } && changeRelations(userId, societies)
+        }
     }
 
     private suspend fun changeRelations(userId: Int, societies: List<VkSocietyDataModel>): Boolean {
-        val relations = safeDaoCall {
-            userSocietyRelationsDao.getRelationsByUserId(userId)
-        }
+        val relations = safeDaoCall(
+            daoCall = { userSocietyRelationsDao.getRelationsByUserId(userId) },
+            onNullValue = { RequestResult.Success(emptyList()) }
+        )
 
         if (relations !is RequestResult.Success) return false
 
@@ -120,7 +113,7 @@ class VkSocietyRepository @Inject constructor(
     }
 
     companion object {
-        private const val SOCIETY_FIELDS = ""
+        private const val SOCIETY_FIELDS = "activity,age_limits,description"
         private const val AUTO_GENERATED_ID = 0L
     }
 }

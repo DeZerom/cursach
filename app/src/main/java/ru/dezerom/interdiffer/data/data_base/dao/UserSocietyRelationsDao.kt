@@ -18,4 +18,7 @@ interface UserSocietyRelationsDao {
     @Query("SELECT * FROM UserSocietyRelationDataModel WHERE userId = :userId")
     suspend fun getRelationsByUserId(userId: Int): List<UserSocietyRelationDataModel>?
 
+    @Query("DELETE FROM UserSocietyRelationDataModel WHERE userId = :userId")
+    suspend fun deleteRelationsByUserId(userId: Int)
+
 }

@@ -41,6 +41,7 @@ suspend fun safeDaoAction(
 
             true
         } catch (e: Exception) {
+            Timber.e(e)
             false
         }
     }

@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = VkSocietyDataModel::class,
             parentColumns = ["id"],
-            childColumns = ["userId"],
+            childColumns = ["societyId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
