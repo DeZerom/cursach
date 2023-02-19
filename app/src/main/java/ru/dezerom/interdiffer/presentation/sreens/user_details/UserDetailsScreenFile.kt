@@ -67,28 +67,20 @@ private fun ShowDetailsAndSocieties(
     viewModel: UserDetailsViewModel,
     state: UserDetailsScreenState.ShowDetailsAndSocieties
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.doublePadding),
-        modifier = Modifier.padding(top = Dimens.Paddings.largePadding)
-    ) {
-        UserDetails(
-            viewModel = viewModel,
-            user = state.details,
-            subscriptionsCount = state.categories.countOfSocieties()
-        )
-
-        SocietiesColumn(viewModel = viewModel, state = state)
-    }
-}
-
-@Composable
-private fun SocietiesColumn(
-    viewModel: UserDetailsViewModel,
-    state: UserDetailsScreenState.ShowDetailsAndSocieties
-) {
     val items = remember(state) { state.categories }
+    val details = remember(state) { state.details }
 
     BaseLazyColumn {
+        item(
+            key = details.id
+        ) {
+            UserDetails(
+                viewModel = viewModel,
+                user = details,
+                subscriptionsCount = items.countOfSocieties()
+            )
+        }
+
         items.forEach { category ->
             item(
                 key = category.name
@@ -133,7 +125,8 @@ private fun UserDetails(
                     .clip(Shapes.small)
             )
 
-            Box(
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = Dimens.Paddings.basePadding)
@@ -142,22 +135,19 @@ private fun UserDetails(
                     verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .align(Alignment.TopStart)
                 ) {
                     BaseText(text = user.lastName)
                     BaseText(text = user.firstName)
                 }
-                
+
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding),
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_refresh), 
+                        painter = painterResource(id = R.drawable.ic_refresh),
                         contentDescription = stringResource(id = R.string.refresh),
                         modifier = Modifier.clickable(
-                            enabled = true, 
+                            enabled = true,
                             onClick = viewModel::onRefreshClicked
                         )
                     )
@@ -167,28 +157,28 @@ private fun UserDetails(
                         contentDescription = stringResource(id = R.string.delete),
                         modifier = Modifier.clickable(
                             enabled = true,
-                            onClick = viewModel::onRefreshClicked
+                            onClick = viewModel::onDeleteClick
                         )
                     )
                 }
-                
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(top = Dimens.Paddings.basePadding)
-                ) {
-                    BaseSmallText(text = stringResource(
-                        id = R.string.birth_date,
-                        formatArgs = arrayOf(user.birthDate.toString())
-                    ))
+            }
 
-                    subscriptionsCount?.let {
-                        BaseSmallText(text = stringResource(
-                            id = R.string.subscriptions_count,
-                            formatArgs = arrayOf(it)
-                        ))
-                    }
+            Column(
+                verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding),
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(top = Dimens.Paddings.basePadding)
+            ) {
+                BaseSmallText(text = stringResource(
+                    id = R.string.birth_date,
+                    formatArgs = arrayOf(user.birthDate.toString())
+                ))
+
+                subscriptionsCount?.let {
+                    BaseSmallText(text = stringResource(
+                        id = R.string.subscriptions_count,
+                        formatArgs = arrayOf(it)
+                    ))
                 }
             }
         }

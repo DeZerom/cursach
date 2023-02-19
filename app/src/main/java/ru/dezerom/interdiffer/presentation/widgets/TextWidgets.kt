@@ -83,7 +83,8 @@ fun BaseSmallText(
     text: String,
     modifier: Modifier = Modifier,
     textColor: Color = TextGrey,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    textAlign: TextAlign = TextAlign.Center
 ) {
     Text(
         text = text,
@@ -91,7 +92,7 @@ fun BaseSmallText(
         color = textColor,
         fontSize = Dimens.FontSizes.small,
         fontWeight = FontWeight.Normal,
-        textAlign = TextAlign.Center,
+        textAlign = textAlign,
         maxLines = maxLines
     )
 }
