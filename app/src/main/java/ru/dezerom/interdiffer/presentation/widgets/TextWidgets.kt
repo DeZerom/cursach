@@ -31,7 +31,8 @@ fun HeadingCenteredText(
 fun BaseBigCenteredText(
     text: String,
     modifier: Modifier,
-    textColor: Color = Color.Black
+    textColor: Color = Color.Black,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         text = text,
@@ -39,7 +40,8 @@ fun BaseBigCenteredText(
         color = textColor,
         fontSize = Dimens.FontSizes.big,
         fontWeight = FontWeight.Medium,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        maxLines = maxLines
     )
 }
 
@@ -63,14 +65,16 @@ fun BaseCenteredText(
 fun BaseText(
     text: String,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.Black
+    textColor: Color = Color.Black,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         text = text,
         modifier = modifier,
         color = textColor,
         fontSize = Dimens.FontSizes.base,
-        fontWeight = FontWeight.Medium
+        fontWeight = FontWeight.Medium,
+        maxLines = maxLines
     )
 }
 
@@ -78,7 +82,8 @@ fun BaseText(
 fun BaseSmallText(
     text: String,
     modifier: Modifier = Modifier,
-    textColor: Color = TextGrey
+    textColor: Color = TextGrey,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         text = text,
@@ -86,7 +91,8 @@ fun BaseSmallText(
         color = textColor,
         fontSize = Dimens.FontSizes.small,
         fontWeight = FontWeight.Normal,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        maxLines = maxLines
     )
 }
 

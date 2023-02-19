@@ -20,6 +20,11 @@
     <string name="birth_date">Дата рождения: %s</string>
     <string name="not_set">Не указана</string>
     <string name="subscriptions_count">Всего подписок: %s</string>
+    <string name="group">Группа</string>
+    <string name="page">Публичная страница</string>
+    <string name="event">Мероприятие</string>
+    <string name="unknown_society">Неизвестное сообщество</string>
+    <string name="category">%s (%d)</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>

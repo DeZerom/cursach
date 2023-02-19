@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -13,9 +14,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import ru.dezerom.interdiffer.R
+import ru.dezerom.interdiffer.domain.logic.categorizer.countOfSocieties
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
+import ru.dezerom.interdiffer.domain.utils.toString
+import ru.dezerom.interdiffer.presentation.items.CategoryName
+import ru.dezerom.interdiffer.presentation.items.VkSocietyItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
+import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.BaseSmallText
 import ru.dezerom.interdiffer.presentation.widgets.BaseText
 import ru.dezerom.interdiffer.presentation.widgets.FullWidthCard
@@ -65,7 +71,12 @@ private fun ShowDetailsAndSocieties(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.doublePadding),
         modifier = Modifier.padding(top = Dimens.Paddings.largePadding)
     ) {
-        UserDetails(viewModel = viewModel, user = state.details)
+        UserDetails(
+            viewModel = viewModel,
+            user = state.details,
+            subscriptionsCount = state.categories.countOfSocieties()
+        )
+
         SocietiesColumn(viewModel = viewModel, state = state)
     }
 }
@@ -75,7 +86,28 @@ private fun SocietiesColumn(
     viewModel: UserDetailsViewModel,
     state: UserDetailsScreenState.ShowDetailsAndSocieties
 ) {
+    val items = remember(state) { state.categories }
 
+    BaseLazyColumn {
+        items.forEach { category ->
+            item(
+                key = category.name
+            ) {
+                CategoryName(name = category.name, count = category.count)
+            }
+
+            items(
+                count = category.count,
+                key = { category.items[it].id }
+            ) {
+                VkSocietyItem(
+                    item = category.items[it],
+                    onClick = viewModel::onItemClick,
+                    onInfoCirclesClicked = viewModel::onInfoCirclesClick
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -98,11 +130,14 @@ private fun UserDetails(
                 error = painterResource(id = R.drawable.ic_people),
                 modifier = Modifier
                     .size(Dimens.Sizes.bigPhotoSize)
-                    .padding(bottom = Dimens.Paddings.basePadding)
                     .clip(Shapes.small)
             )
 
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = Dimens.Paddings.basePadding)
+            ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,

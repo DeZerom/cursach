@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.domain.interactors.VkUsersInteractor
+import ru.dezerom.interdiffer.domain.logic.categorizer.categorizeSocieties
 import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
@@ -33,6 +34,14 @@ class UserDetailsViewModel @Inject constructor(
 
     override fun onCriticalErrorClick() {
         refreshInfo()
+    }
+
+    fun onInfoCirclesClick() {
+
+    }
+
+    fun onItemClick(item: VkSocietyModel) {
+
     }
 
     fun onDeleteClick() {
@@ -78,7 +87,7 @@ class UserDetailsViewModel @Inject constructor(
             onSuccess = {
                 _state.value = UserDetailsScreenState.ShowDetailsAndSocieties(
                     details = userDetails,
-                    societies = it
+                    categories = categorizeSocieties(it)
                 )
             },
             onError = { handleError(it) }
