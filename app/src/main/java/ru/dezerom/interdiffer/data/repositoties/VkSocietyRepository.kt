@@ -11,6 +11,7 @@ import ru.dezerom.interdiffer.data.utils.safeVkApiCall
 import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.mappers.toDomain
+import java.lang.Integer.min
 import javax.inject.Inject
 
 class VkSocietyRepository @Inject constructor(
@@ -40,30 +41,39 @@ class VkSocietyRepository @Inject constructor(
             successMapper = { it.data?.count }
         )
 
-        val count = if (countRes is RequestResult.Success)
+        var count = if (countRes is RequestResult.Success)
             countRes.data
         else
             return false
 
-        val societies = safeVkApiCall(
-            call = {
-                usersApiService.getUserSubscriptions(
-                    userId = userId,
-                    offset = 0,
-                    count = count,
-                    fields = SOCIETY_FIELDS,
-                    extended = true
-                )
-            },
-            onNullValue = { RequestResult.Error.Network },
-            successMapper = { response -> response.data?.societies }
-        )
+        var result = true
+        while (count > 0) {
+            val societies = safeVkApiCall(
+                call = {
+                    usersApiService.getUserSubscriptions(
+                        userId = userId,
+                        offset = 0,
+                        count = min(count, MAX_COUNT_PER_BATCH),
+                        fields = SOCIETY_FIELDS,
+                        extended = true
+                    )
+                },
+                onNullValue = { RequestResult.Error.Network },
+                successMapper = { response -> response.data?.societies }
+            )
 
-        return if (societies is RequestResult.Success) {
-            writeSocietiesToDb(societies.data) && changeRelations(userId, societies.data)
-        } else {
-            false
+            result = if (societies is RequestResult.Success) {
+                writeSocietiesToDb(societies.data) && changeRelations(userId, societies.data)
+            } else {
+                false
+            }
+
+            if (!result) break
+
+            count -= MAX_COUNT_PER_BATCH
         }
+
+        return result
     }
 
     private suspend fun writeSocietiesToDb(societies: List<VkSocietyDataModel>): Boolean {
@@ -121,5 +131,6 @@ class VkSocietyRepository @Inject constructor(
     companion object {
         private const val SOCIETY_FIELDS = "activity,age_limits,description"
         private const val AUTO_GENERATED_ID = 0L
+        private const val MAX_COUNT_PER_BATCH = 200
     }
 }
