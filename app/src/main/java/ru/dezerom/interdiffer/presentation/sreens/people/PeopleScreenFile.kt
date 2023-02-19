@@ -58,7 +58,7 @@ fun PeopleScreen(
         null -> {}
     }
 
-    BaseScreen(viewModel = viewModel) {
+    BaseScreen(viewModel = viewModel, navController = navController) {
         when (viewState) {
             is PeopleScreenState.ShowingList ->
                 ShowListState(

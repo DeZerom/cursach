@@ -6,17 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.logic.categorizer.countOfSocieties
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.utils.toString
+import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.CategoryName
 import ru.dezerom.interdiffer.presentation.items.VkSocietyItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
@@ -28,10 +31,25 @@ import ru.dezerom.interdiffer.presentation.widgets.FullWidthCard
 import ru.dezerom.interdiffer.ui.theme.Shapes
 
 @Composable
-fun UserDetailsScreen(viewModel: UserDetailsViewModel) {
+fun UserDetailsScreen(
+    viewModel: UserDetailsViewModel,
+    navController: NavController
+) {
     val state = viewModel.state.collectAsState()
+    val sideEffect = viewModel.sideEffect.collectAsState(null)
 
-    BaseScreen(viewModel = viewModel) {
+    when (sideEffect.value) {
+        is UserDetailsSideEffect.ShowInfoCirclesDialog -> {
+            val showDialog = remember { mutableStateOf(true) }
+            showDialog.value = true
+
+            InfoCirclesDescriptionDialogScreen(showState = showDialog)
+        }
+
+        null -> {}
+    }
+
+    BaseScreen(viewModel = viewModel, navController = navController) {
         when (val st = state.value) {
             is UserDetailsScreenState.ShowDetailsOnly ->
                 ShowDetailsOnly(viewModel, st)

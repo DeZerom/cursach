@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavController
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.presentation.utils.FullWidthCardModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
@@ -27,7 +28,11 @@ import ru.dezerom.interdiffer.ui.theme.Orange
 import ru.dezerom.interdiffer.ui.theme.Shapes
 
 @Composable
-fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
+fun BaseScreen(
+    viewModel: BaseViewModel,
+    navController: NavController,
+    content: @Composable () -> Unit
+) {
     val sideEffect = viewModel.baseSideEffect.collectAsState(initial = null)
     val state = viewModel.baseScreenState.collectAsState()
 
@@ -45,6 +50,13 @@ fun BaseScreen(viewModel: BaseViewModel, content: @Composable () -> Unit) {
                 Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
             }
         }
+
+        is BaseSideEffect.GoBack -> {
+            LaunchedEffect(key1 = Unit) {
+                navController.popBackStack()
+            }
+        }
+
         null -> {}
     }
 

@@ -19,6 +19,12 @@ class VkSocietyRepository @Inject constructor(
     private val userSocietyRelationsDao: UserSocietyRelationsDao
 ) {
 
+    suspend fun reloadUserSubscriptions(userId: Int): RequestResult<List<VkSocietyModel>> {
+        if (!addUserSocieties(userId)) return RequestResult.Error.Network
+
+        return getSavedSocieties(userId)
+    }
+
     suspend fun getSavedSocieties(userId: Int): RequestResult<List<VkSocietyModel>> {
         return safeDaoCall {
             societiesDao.getUserSocieties(userId).map { it.toDomain() }

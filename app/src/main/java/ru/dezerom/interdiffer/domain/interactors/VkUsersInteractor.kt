@@ -26,16 +26,25 @@ class VkUsersInteractor @Inject constructor(
         return usersRepository.getSavedUsers()
     }
 
-    suspend fun getUserInfoById(userId: Int): RequestResult<VkUserModel> {
-        return usersRepository.getUserInfoById(userId)
+    suspend fun getUserInfoById(userId: Int, reload: Boolean): RequestResult<VkUserModel> {
+        return if (!reload)
+            usersRepository.getUserInfoById(userId)
+        else
+            usersRepository.reloadUserInfoById(userId)
     }
 
     suspend fun deleteVkUser(userId: Int): Boolean {
         return usersRepository.deleteVkUser(userId)
     }
 
-    suspend fun getUserSubscriptions(userId: Int): RequestResult<List<VkSocietyModel>> {
-        return societiesRepository.getSavedSocieties(userId)
+    suspend fun getUserSubscriptions(
+        userId: Int,
+        reload: Boolean
+    ): RequestResult<List<VkSocietyModel>> {
+        return if (!reload)
+            societiesRepository.getSavedSocieties(userId)
+        else
+            societiesRepository.reloadUserSubscriptions(userId)
     }
 
 }

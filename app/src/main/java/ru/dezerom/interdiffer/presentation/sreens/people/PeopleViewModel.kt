@@ -10,7 +10,10 @@ import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.interactors.VkUsersInteractor
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
-import ru.dezerom.interdiffer.domain.models.utils.handle
+import ru.dezerom.interdiffer.domain.models.utils.suspendHandle
+import ru.dezerom.interdiffer.presentation.change_listener.vk_user.VkUsersChangeListenersHolder
+import ru.dezerom.interdiffer.presentation.change_listener.vk_user.VkUsersChangesListener
+import ru.dezerom.interdiffer.presentation.change_listener.vk_user.VkUsersPayload
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import ru.dezerom.interdiffer.presentation.utils.forceSend
 import javax.inject.Inject
@@ -18,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PeopleViewModel @Inject constructor(
     private val vkUsersInteractor: VkUsersInteractor
-): BaseViewModel() {
+): BaseViewModel(), VkUsersChangesListener {
 
     private val _viewState =
         MutableStateFlow<PeopleScreenState>(PeopleScreenState.ShowingList(listOf()))
@@ -28,8 +31,27 @@ class PeopleViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        VkUsersChangeListenersHolder.register(this)
+
         viewModelScope.launch {
             refreshVkUsersList()
+        }
+    }
+
+    override fun onCleared() {
+        VkUsersChangeListenersHolder.unregister(this)
+        super.onCleared()
+    }
+
+    override fun onUsersChange(payload: VkUsersPayload) {
+        when (payload) {
+            is VkUsersPayload.UserDeleted -> {
+                if (viewState.value is PeopleScreenState.ShowingList) {
+                    viewModelScope.launch {
+                        refreshVkUsersList()
+                    }
+                }
+            }
         }
     }
 
@@ -77,14 +99,16 @@ class PeopleViewModel @Inject constructor(
     }
 
     private suspend fun refreshVkUsersList() {
-        setProgressOrContent(true)
+        viewModelScope.launch {
+            setProgressOrContent(true)
 
-        vkUsersInteractor.getSavedUsers().handle(
-            onSuccess = {
-                _viewState.value = PeopleScreenState.ShowingList(it)
-                setProgressOrContent(false)
-            },
-            onError = { handleError(it) }
-        )
+            vkUsersInteractor.getSavedUsers().suspendHandle(
+                onSuccess = {
+                    _viewState.value = PeopleScreenState.ShowingList(it)
+                    setProgressOrContent(false)
+                },
+                onError = { handleError(it) }
+            )
+        }
     }
 }

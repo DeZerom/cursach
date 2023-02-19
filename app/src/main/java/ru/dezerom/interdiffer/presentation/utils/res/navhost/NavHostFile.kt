@@ -42,7 +42,7 @@ fun NavGraphBuilder.peopleGraph(navController: NavController) {
             route = NestedNavDestinations.VkUserDetails.asRoute(),
             argName = NestedNavDestinations.VkUserDetails.argName
         ) {
-            UserDetailsScreen(viewModel = hiltViewModel())
+            UserDetailsScreen(viewModel = hiltViewModel(), navController)
         }
     }
 }

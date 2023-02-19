@@ -10,3 +10,14 @@ fun <T> RequestResult<T>.handle(
         is RequestResult.Error -> onError(this)
     }
 }
+
+suspend fun <T> RequestResult<T>.suspendHandle(
+    onSuccess: suspend (T) -> Unit,
+    onError: (RequestResult.Error) -> Unit
+) {
+    when (this) {
+        is RequestResult.Success -> onSuccess(data)
+
+        is RequestResult.Error -> onError(this)
+    }
+}

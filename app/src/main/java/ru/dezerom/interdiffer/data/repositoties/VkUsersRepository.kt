@@ -18,6 +18,18 @@ class VkUsersRepository @Inject constructor(
     private val userSocietyRelationsDao: UserSocietyRelationsDao
 ) {
 
+    suspend fun reloadUserInfoById(userId: Int): RequestResult<VkUserModel> {
+        val userRequest = getUserInfoById(userId)
+
+        if (userRequest !is RequestResult.Success) return userRequest
+
+        val idRequestResult = addUserByScreenName(userScreenName = userRequest.data.id.toString())
+
+        if (idRequestResult !is RequestResult.Success) return RequestResult.Error.RoomError
+
+        return getUserInfoById(idRequestResult.data)
+    }
+
     suspend fun getUserInfoById(id: Int): RequestResult<VkUserModel> {
         return safeDaoCall {
             vkUsersDao.getUserById(id)?.toDomain()

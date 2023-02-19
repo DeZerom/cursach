@@ -9,4 +9,6 @@ sealed interface BaseSideEffect {
 
         class ByStringRes(@StringRes val textRes: Int): ShowToast()
     }
+
+    object GoBack: BaseSideEffect
 }

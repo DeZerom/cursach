@@ -48,4 +48,8 @@ abstract class BaseViewModel: ViewModel() {
             handleUnknownError()
     }
 
+    protected suspend fun goBack() {
+        _baseSideEffect.send(BaseSideEffect.GoBack)
+    }
+
 }
