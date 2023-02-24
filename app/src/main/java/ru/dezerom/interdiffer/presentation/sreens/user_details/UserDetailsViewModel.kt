@@ -61,7 +61,7 @@ class UserDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             if (vkUsersInteractor.deleteVkUser(userId)) {
                 VkUsersChangeListenersHolder.triggerChange(VkUsersPayload.UserDeleted(userId))
-                goBack()
+                sendGoBackSideEffect()
             } else {
                 setToastText(R.string.something_went_wrong)
             }

@@ -23,6 +23,7 @@ import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogS
 import ru.dezerom.interdiffer.presentation.items.CategoryName
 import ru.dezerom.interdiffer.presentation.items.VkSocietyItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
+import ru.dezerom.interdiffer.presentation.toolbar.Toolbar
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.BaseSmallText
@@ -49,7 +50,17 @@ fun UserDetailsScreen(
         null -> {}
     }
 
-    BaseScreen(viewModel = viewModel, navController = navController) {
+    BaseScreen(
+        viewModel = viewModel,
+        navController = navController,
+        toolbar = {
+            Toolbar(
+                title = state.value.userName,
+                showBackButton = true,
+                onBackButtonClick = viewModel::goBack
+            )
+        }
+    ) {
         when (val st = state.value) {
             is UserDetailsScreenState.ShowDetailsOnly ->
                 ShowDetailsOnly(viewModel, st)

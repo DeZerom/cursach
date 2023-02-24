@@ -2,10 +2,12 @@ package ru.dezerom.interdiffer.presentation.sreens.base
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.domain.models.utils.HandleableError
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 
@@ -18,6 +20,12 @@ abstract class BaseViewModel: ViewModel() {
     val baseScreenState = _baseScreenState.asStateFlow()
 
     abstract fun onCriticalErrorClick()
+
+    fun goBack() {
+        viewModelScope.launch {
+            sendGoBackSideEffect()
+        }
+    }
 
     protected fun setProgressOrContent(isProgress: Boolean) {
         if (isProgress)
@@ -48,7 +56,7 @@ abstract class BaseViewModel: ViewModel() {
             handleUnknownError()
     }
 
-    protected suspend fun goBack() {
+    protected suspend fun sendGoBackSideEffect() {
         _baseSideEffect.send(BaseSideEffect.GoBack)
     }
 

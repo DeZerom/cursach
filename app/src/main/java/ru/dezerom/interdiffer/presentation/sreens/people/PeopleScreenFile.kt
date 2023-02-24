@@ -15,6 +15,7 @@ import ru.dezerom.interdiffer.presentation.dialogs.AddVkUserDialog
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
+import ru.dezerom.interdiffer.presentation.toolbar.Toolbar
 import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
@@ -58,7 +59,11 @@ fun PeopleScreen(
         null -> {}
     }
 
-    BaseScreen(viewModel = viewModel, navController = navController) {
+    BaseScreen(
+        viewModel = viewModel,
+        navController = navController,
+        toolbar = { Toolbar(title = stringResource(id = R.string.people)) }
+    ) {
         when (viewState) {
             is PeopleScreenState.ShowingList ->
                 ShowListState(

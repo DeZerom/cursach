@@ -3,6 +3,7 @@ package ru.dezerom.interdiffer.presentation.sreens.base
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,6 +33,7 @@ import ru.dezerom.interdiffer.ui.theme.Shapes
 fun BaseScreen(
     viewModel: BaseViewModel,
     navController: NavController,
+    toolbar: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
     val sideEffect = viewModel.baseSideEffect.collectAsState(initial = null)
@@ -60,12 +63,16 @@ fun BaseScreen(
         null -> {}
     }
 
-    when (val st = state.value) {
-        is BaseScreenState.Loading -> BaseColumnWidget { LoadingState() }
-        is BaseScreenState.ShowingError -> BaseColumnWidget {
-            ErrorState(st, viewModel::onCriticalErrorClick)
+    Column(modifier = Modifier.fillMaxSize()) {
+        toolbar()
+
+        when (val st = state.value) {
+            is BaseScreenState.Loading -> BaseColumnWidget { LoadingState() }
+            is BaseScreenState.ShowingError -> BaseColumnWidget {
+                ErrorState(st, viewModel::onCriticalErrorClick)
+            }
+            is BaseScreenState.ShowingInfo ->  content()
         }
-        is BaseScreenState.ShowingInfo ->  content()
     }
 }
 

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.interdiffer.R
@@ -104,12 +105,14 @@ fun FullWidthButton(
 @Composable
 fun FullWidthCard(
     modifier: Modifier = Modifier,
+    shape: Shape = Shapes.small,
+    backgroundColor: Color = Color.White,
     content: @Composable () -> Unit
 ) {
     Card(
         modifier = FullWidthModifier.then(modifier),
-        shape = Shapes.small,
-        backgroundColor = Color.White,
+        shape = shape,
+        backgroundColor = backgroundColor,
         elevation = Dimens.Elevations.baseElevation,
         content = content
     )

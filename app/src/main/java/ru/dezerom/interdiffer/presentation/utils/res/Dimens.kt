@@ -31,5 +31,7 @@ object Dimens {
         val dividerThickness = 1.dp
 
         val defaultCornerRadius = 10.dp
+
+        val toolbarHeight = 48.dp
     }
 }
