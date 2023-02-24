@@ -53,7 +53,7 @@ class UserDetailsViewModel @Inject constructor(
 
     fun onItemClick(item: VkSocietyModel) {
         viewModelScope.launch {
-            setToastText("Здесь будет подробная информация") //todo
+            _sideEffect.forceSend(UserDetailsSideEffect.ShowSocietyDetailsDialog(item))
         }
     }
 

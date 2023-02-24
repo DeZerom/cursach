@@ -25,6 +25,7 @@
     <string name="event">Мероприятие</string>
     <string name="unknown_society">Неизвестное сообщество</string>
     <string name="category">%s (%d)</string>
+    <string name="society">Сообщество</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>

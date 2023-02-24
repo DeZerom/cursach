@@ -79,6 +79,25 @@ fun BaseText(
 }
 
 @Composable
+fun NormalText(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
+    maxLines: Int = Int.MAX_VALUE,
+    textAlign: TextAlign = TextAlign.Center
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = textColor,
+        fontSize = Dimens.FontSizes.base,
+        fontWeight = FontWeight.Normal,
+        textAlign = textAlign,
+        maxLines = maxLines
+    )
+}
+
+@Composable
 fun BaseSmallText(
     text: String,
     modifier: Modifier = Modifier,
@@ -94,6 +113,25 @@ fun BaseSmallText(
         fontWeight = FontWeight.Normal,
         textAlign = textAlign,
         maxLines = maxLines
+    )
+}
+
+@Composable
+fun BaseBoldText(
+    text: String,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
+    maxLines: Int = Int.MAX_VALUE,
+    textAlign: TextAlign = TextAlign.Center
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = textColor,
+        fontSize = Dimens.FontSizes.base,
+        fontWeight = FontWeight.SemiBold,
+        maxLines = maxLines,
+        textAlign = textAlign
     )
 }
 

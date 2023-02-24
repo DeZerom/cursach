@@ -20,6 +20,7 @@ import ru.dezerom.interdiffer.domain.logic.categorizer.countOfSocieties
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.utils.toString
 import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
+import ru.dezerom.interdiffer.presentation.dialogs.SocietyDetailsDialog
 import ru.dezerom.interdiffer.presentation.items.CategoryName
 import ru.dezerom.interdiffer.presentation.items.VkSocietyItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
@@ -39,12 +40,23 @@ fun UserDetailsScreen(
     val state = viewModel.state.collectAsState()
     val sideEffect = viewModel.sideEffect.collectAsState(null)
 
-    when (sideEffect.value) {
+    when (val se = sideEffect.value) {
         is UserDetailsSideEffect.ShowInfoCirclesDialog -> {
             val showDialog = remember { mutableStateOf(true) }
             showDialog.value = true
 
             InfoCirclesDescriptionDialogScreen(showState = showDialog)
+        }
+
+        is UserDetailsSideEffect.ShowSocietyDetailsDialog -> {
+            val showDialog = remember { mutableStateOf(true) }
+            showDialog.value = true
+
+            SocietyDetailsDialog(
+                showState = showDialog,
+                societyModel = se.society,
+                onInfoCirclesClick = viewModel::onInfoCirclesClick
+            )
         }
 
         null -> {}
