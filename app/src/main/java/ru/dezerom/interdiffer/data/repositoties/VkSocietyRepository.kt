@@ -46,9 +46,10 @@ class VkSocietyRepository @Inject constructor(
         else
             return false
 
-        var result = true
+        var result: Boolean
+        val societies = mutableListOf<VkSocietyDataModel>()
         while (count > 0) {
-            val societies = safeVkApiCall(
+            val societiesRes = safeVkApiCall(
                 call = {
                     usersApiService.getUserSubscriptions(
                         userId = userId,
@@ -62,8 +63,8 @@ class VkSocietyRepository @Inject constructor(
                 successMapper = { response -> response.data?.societies }
             )
 
-            result = if (societies is RequestResult.Success) {
-                writeSocietiesToDb(societies.data) && changeRelations(userId, societies.data)
+            result = if (societiesRes is RequestResult.Success) {
+                societies.addAll(societiesRes.data)
             } else {
                 false
             }
@@ -72,6 +73,8 @@ class VkSocietyRepository @Inject constructor(
 
             count -= MAX_COUNT_PER_BATCH
         }
+
+        result = writeSocietiesToDb(societies) && changeRelations(userId, societies)
 
         return result
     }

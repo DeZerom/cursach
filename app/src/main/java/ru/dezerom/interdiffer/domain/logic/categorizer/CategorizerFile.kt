@@ -4,26 +4,21 @@ import ru.dezerom.interdiffer.domain.models.society.SocietyCategory
 import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 
 fun categorizeSocieties(societies: List<VkSocietyModel>): List<SocietyCategory> {
-    val sorted = societies.sortedBy { it.activity }
+    val map = mutableMapOf<String, MutableList<VkSocietyModel>>()
 
-    var activity = sorted.firstOrNull()?.activity
-        ?: return listOf(SocietyCategory("", emptyList()))
+    societies.forEach {
+        val entry = map[it.activity]
 
-    var buffer = mutableListOf<VkSocietyModel>()
-    val result = mutableListOf<SocietyCategory>()
-
-    sorted.forEach {
-        if (it.activity != activity) {
-            result.add(SocietyCategory(name = activity, items = buffer))
-
-            activity = it.activity
-            buffer = mutableListOf()
+        if (entry == null) {
+            map[it.activity] = mutableListOf(it)
+        } else {
+            entry.add(it)
         }
-
-        buffer.add(it)
     }
 
-    return result
+    return map.map {
+        SocietyCategory(it.key, it.value)
+    }
 }
 
 fun List<SocietyCategory>.countOfSocieties(): Int =
