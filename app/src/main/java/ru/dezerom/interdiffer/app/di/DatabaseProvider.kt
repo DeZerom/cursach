@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.dezerom.interdiffer.data.data_base.TheDatabase
+import ru.dezerom.interdiffer.data.data_base.dao.ComparisonDao
 import ru.dezerom.interdiffer.data.data_base.dao.UserSocietyRelationsDao
 import ru.dezerom.interdiffer.data.data_base.dao.VkSocietiesDao
 import ru.dezerom.interdiffer.data.data_base.dao.VkUsersDao
@@ -33,5 +34,9 @@ class DatabaseProvider {
     @Provides
     fun provideUserSocietyRelationsDao(databaseImpl: TheDatabase): UserSocietyRelationsDao =
         databaseImpl.getUserSocietyRelationsDao()
+
+    @Provides
+    fun provideComparisonsDao(databaseImpl: TheDatabase): ComparisonDao =
+        databaseImpl.getComparisonsDao()
 
 }

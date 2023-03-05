@@ -28,7 +28,7 @@ fun MainNavHost(
         modifier = modifier,
     ) {
         peopleGraph(navController)
-        comparisonsGraph()
+        comparisonsGraph(navController)
     }
 }
 
@@ -47,10 +47,10 @@ fun NavGraphBuilder.peopleGraph(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.comparisonsGraph() {
+fun NavGraphBuilder.comparisonsGraph(navController: NavController) {
     navigation(RootNavDestinations.Comparisons.route, Graphs.ComparisonsGraph.route) {
         composable(RootNavDestinations.Comparisons.route) {
-            ComparisonsScreen()
+            ComparisonsScreen(viewModel = hiltViewModel(), navController = navController)
         }
     }
 }

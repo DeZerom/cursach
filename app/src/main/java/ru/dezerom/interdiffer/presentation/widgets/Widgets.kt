@@ -1,5 +1,6 @@
 package ru.dezerom.interdiffer.presentation.widgets
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,10 +11,12 @@ import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import coil.compose.AsyncImage
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.presentation.utils.FullWidthCardModifier
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
@@ -130,5 +133,21 @@ fun BaseLazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = content
+    )
+}
+
+@Composable
+fun Photo100(
+    model: String,
+    @DrawableRes placeholder: Int
+) {
+    AsyncImage(
+        model = model,
+        contentDescription = null,
+        placeholder = painterResource(id = placeholder),
+        error = painterResource(id = placeholder),
+        modifier = Modifier
+            .size(Dimens.Sizes.smallPhotoSize)
+            .clip(Shapes.small)
     )
 }
