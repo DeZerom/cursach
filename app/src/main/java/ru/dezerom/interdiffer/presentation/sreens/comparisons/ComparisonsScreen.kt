@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import ru.dezerom.interdiffer.R
+import ru.dezerom.interdiffer.presentation.dialogs.AddComparisonDialog
 import ru.dezerom.interdiffer.presentation.items.ComparisonItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
 import ru.dezerom.interdiffer.presentation.toolbar.Toolbar
@@ -21,7 +24,6 @@ import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget
 import ru.dezerom.interdiffer.ui.theme.Orange
-import timber.log.Timber
 
 @Composable
 fun ComparisonsScreen(
@@ -29,6 +31,21 @@ fun ComparisonsScreen(
     navController: NavController
 ) {
     val state = viewModel.state.collectAsState()
+    val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
+
+    when (sideEffect.value) {
+        ComparisonsScreenSideEffect.ShowAddComparisonDialog -> {
+            val showDialogState = remember { mutableStateOf(true) }
+            showDialogState.value = true
+
+            AddComparisonDialog(
+                showState = showDialogState,
+                onUsersSelect = viewModel::createComparison
+            )
+        }
+
+        null -> {}
+    }
 
     BaseScreen(
         viewModel = viewModel,
@@ -54,7 +71,6 @@ private fun ShowList(
     viewModel: ComparisonsViewModel,
     state: ComparisonsScreenState.ShowList
 ) {
-    Timber.e("${state.list}")
     if (state.list.isEmpty()) {
         EmptyListWidget(onAddButtonClick = viewModel::onAddItemClick)
     } else {
@@ -80,8 +96,8 @@ private fun ShowList(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(
-                        bottom = Dimens.Paddings.halfPadding,
-                        end = Dimens.Paddings.halfPadding
+                        bottom = Dimens.Paddings.smallPadding,
+                        end = Dimens.Paddings.smallPadding
                     )
             ) {
                 Image(

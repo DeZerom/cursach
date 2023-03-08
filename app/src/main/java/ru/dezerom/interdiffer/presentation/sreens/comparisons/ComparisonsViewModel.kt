@@ -2,15 +2,18 @@ package ru.dezerom.interdiffer.presentation.sreens.comparisons
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.interactors.ComparisonsInteractor
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
+import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.handle
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
-import timber.log.Timber
+import ru.dezerom.interdiffer.presentation.utils.forceSend
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,8 +25,11 @@ class ComparisonsViewModel @Inject constructor(
         MutableStateFlow(ComparisonsScreenState.Empty)
     val state = _state.asStateFlow()
 
+    private val _sideEffects: MutableSharedFlow<ComparisonsScreenSideEffect?> =
+        MutableSharedFlow()
+    val sideEffect = _sideEffects.asSharedFlow()
+
     init {
-        Timber.e("init")
         fetchInfo()
     }
 
@@ -31,8 +37,14 @@ class ComparisonsViewModel @Inject constructor(
         fetchInfo()
     }
 
+    fun createComparison(firstUser: VkUserModel, secondUser: VkUserModel) = viewModelScope.launch {
+        //todo
+    }
+
     fun onAddItemClick() = viewModelScope.launch {
-        setToastText("В разработке") //todo
+        _sideEffects.forceSend(
+            ComparisonsScreenSideEffect.ShowAddComparisonDialog
+        )
     }
 
     fun onClick(item: ComparisonModel) = viewModelScope.launch {
@@ -58,8 +70,6 @@ class ComparisonsViewModel @Inject constructor(
     }
 
     private fun fetchInfo() = viewModelScope.launch {
-        Timber.e("fetch")
-
         setProgressOrContent(true)
 
         val res = comparisonsInteractor.getSavedComparisons()

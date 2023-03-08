@@ -84,6 +84,7 @@ fun EmptyListWidget(
 fun FullWidthButton(
     text: String,
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -95,7 +96,8 @@ fun FullWidthButton(
             disabledContentColor = Color.White
         ),
         onClick = onClick,
-        shape = Shapes.small
+        shape = Shapes.small,
+        enabled = isEnabled
     ) {
         BaseBigCenteredText(
             text = text,

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import ru.dezerom.interdiffer.presentation.utils.FullWidthModifier
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
 import ru.dezerom.interdiffer.ui.theme.TextGrey
@@ -66,13 +67,14 @@ fun BaseText(
     text: String,
     modifier: Modifier = Modifier,
     textColor: Color = Color.Black,
-    maxLines: Int = Int.MAX_VALUE
+    maxLines: Int = Int.MAX_VALUE,
+    fontSize: TextUnit = Dimens.FontSizes.base
 ) {
     Text(
         text = text,
         modifier = modifier,
         color = textColor,
-        fontSize = Dimens.FontSizes.base,
+        fontSize = fontSize,
         fontWeight = FontWeight.Medium,
         maxLines = maxLines
     )
