@@ -10,6 +10,7 @@ import ru.dezerom.interdiffer.domain.interactors.ComparisonsInteractor
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.utils.handle
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,11 +23,16 @@ class ComparisonsViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
+        Timber.e("init")
         fetchInfo()
     }
 
     override fun onCriticalErrorClick() {
         fetchInfo()
+    }
+
+    fun onAddItemClick() = viewModelScope.launch {
+        setToastText("В разработке") //todo
     }
 
     fun onClick(item: ComparisonModel) = viewModelScope.launch {
@@ -52,9 +58,11 @@ class ComparisonsViewModel @Inject constructor(
     }
 
     private fun fetchInfo() = viewModelScope.launch {
+        Timber.e("fetch")
+
         setProgressOrContent(true)
 
-        val res = comparisonsInteractor.getSavedComparison()
+        val res = comparisonsInteractor.getSavedComparisons()
 
         res.handle(
             onSuccess = {

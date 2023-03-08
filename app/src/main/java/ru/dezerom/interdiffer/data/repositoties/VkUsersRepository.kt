@@ -37,9 +37,10 @@ class VkUsersRepository @Inject constructor(
     }
 
     suspend fun getSavedUsers(): RequestResult<List<VkUserModel>> {
-        return safeDaoCall {
-            vkUsersDao.getAllVkUsers()?.map { it.toDomain() }
-        }
+        return safeDaoCall(
+            daoCall = { vkUsersDao.getAllVkUsers()?.map { it.toDomain() } },
+            onNullValue = { RequestResult.Success(emptyList()) }
+        )
     }
 
     suspend fun addUserByScreenName(userScreenName: String): RequestResult<Int> {

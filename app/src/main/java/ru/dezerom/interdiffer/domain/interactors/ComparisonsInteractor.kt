@@ -20,7 +20,7 @@ class ComparisonsInteractor @Inject constructor(
         return comparisonsRepository.createComparison(firstUserId, secondUserId)
     }
 
-    suspend fun getSavedComparison(): RequestResult<List<ComparisonModel>> {
+    suspend fun getSavedComparisons(): RequestResult<List<ComparisonModel>> {
         return comparisonsRepository.getSavedComparison()
     }
 

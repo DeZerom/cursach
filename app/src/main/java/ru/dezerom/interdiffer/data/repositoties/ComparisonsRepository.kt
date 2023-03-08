@@ -8,6 +8,7 @@ import ru.dezerom.interdiffer.data.utils.safeDaoCall
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.mappers.toDomain
+import timber.log.Timber
 import javax.inject.Inject
 
 class ComparisonsRepository @Inject constructor(
@@ -38,14 +39,19 @@ class ComparisonsRepository @Inject constructor(
     }
 
     suspend fun getSavedComparison(): RequestResult<List<ComparisonModel>> {
-        return safeDaoCall {
-            comparisonDao.getAll().mapNotNull { mapToDomain(it) }
-        }
+        return safeDaoCall(
+            daoCall = { comparisonDao.getAll()?.mapNotNull { mapToDomain(it) } },
+            onNullValue = { RequestResult.Success(emptyList()) }
+        )
     }
 
     private suspend fun mapToDomain(model: ComparisonDataModel): ComparisonModel? {
+        Timber.e("$model")
+
         val firstUser = safeDaoCall { vkUsersDao.getUserById(model.firstPersonId)?.toDomain() }
         val secondUser = safeDaoCall { vkUsersDao.getUserById(model.secondPersonId)?.toDomain() }
+
+        Timber.e("first $firstUser second $secondUser")
 
         return if (firstUser is RequestResult.Success && secondUser is RequestResult.Success) {
             ComparisonModel(

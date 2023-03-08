@@ -21,19 +21,21 @@ import ru.dezerom.interdiffer.presentation.widgets.FullWidthCard
 import ru.dezerom.interdiffer.presentation.widgets.Photo100
 
 @Composable
-fun ComparisonScreen(
+fun ComparisonItem(
     comparison: ComparisonModel,
     onClick: (ComparisonModel) -> Unit,
     onDelete: (ComparisonModel) -> Unit
 ) {
     FullWidthCard {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.basePadding),
             modifier = FullWidthModifier
                 .clickable { onClick(comparison) }
+                .padding(Dimens.Paddings.basePadding)
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(Dimens.Paddings.largePadding),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = FullWidthModifier
             ) {
@@ -57,15 +59,18 @@ fun ComparisonScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .height(IntrinsicSize.Min)
             ) {
-                InfoColumn(person = comparison.firstPerson, alignment = Alignment.Start)
+                InfoColumn(person = comparison.firstPerson, textAlignment = Alignment.Start)
 
                 Divider(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .width(Dimens.Sizes.dividerThickness)
+                        .fillMaxHeight()
                 )
 
-                InfoColumn(person = comparison.secondPerson, alignment = Alignment.End)
+                InfoColumn(person = comparison.secondPerson, textAlignment = Alignment.End)
             }
 
             Image(
@@ -82,10 +87,10 @@ fun ComparisonScreen(
 @Composable
 private fun InfoColumn(
     person: VkUserModel,
-    alignment: Alignment.Horizontal
+    textAlignment: Alignment.Horizontal
 ) {
     Column(
-        horizontalAlignment = alignment,
+        horizontalAlignment = textAlignment,
         verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding)
     ) {
         BaseText(text = person.firstName)

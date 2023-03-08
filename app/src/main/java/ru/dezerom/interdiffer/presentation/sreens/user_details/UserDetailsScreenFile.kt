@@ -174,7 +174,7 @@ private fun UserDetails(
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.halfPadding),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.Start,
                     modifier = Modifier
                 ) {
                     BaseText(text = user.lastName)

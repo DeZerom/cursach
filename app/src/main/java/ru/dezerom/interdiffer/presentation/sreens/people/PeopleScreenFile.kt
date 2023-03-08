@@ -114,7 +114,7 @@ private fun ShowListState(
                     )
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_add),
+                    painter = painterResource(id = R.drawable.ic_plus_no_bg),
                     contentDescription = stringResource(id = R.string.add)
                 )
             }

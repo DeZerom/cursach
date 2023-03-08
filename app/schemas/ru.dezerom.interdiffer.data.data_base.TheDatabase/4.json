@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "63774282e7bce6fb4f270f695ade9e2d",
+    "identityHash": "2114b30c3bd8de7b394c2d3a96fc0417",
     "entities": [
       {
         "tableName": "VkUserDataModel",
@@ -213,12 +213,67 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "ComparisonDataModel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstPersonId` INTEGER NOT NULL, `secondPersonId` INTEGER NOT NULL, FOREIGN KEY(`firstPersonId`) REFERENCES `VkUserDataModel`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`secondPersonId`) REFERENCES `VkUserDataModel`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstPersonId",
+            "columnName": "firstPersonId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "secondPersonId",
+            "columnName": "secondPersonId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "VkUserDataModel",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "firstPersonId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "VkUserDataModel",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "secondPersonId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '63774282e7bce6fb4f270f695ade9e2d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2114b30c3bd8de7b394c2d3a96fc0417')"
     ]
   }
 }

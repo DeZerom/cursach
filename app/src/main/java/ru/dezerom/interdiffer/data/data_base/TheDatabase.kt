@@ -20,7 +20,7 @@ import ru.dezerom.interdiffer.data.models.VkUserDataModel
         UserSocietyRelationDataModel::class,
         ComparisonDataModel::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = true,
     autoMigrations = []
 )

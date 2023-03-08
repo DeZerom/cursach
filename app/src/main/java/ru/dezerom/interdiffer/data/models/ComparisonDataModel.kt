@@ -8,8 +8,15 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = VkUserDataModel::class,
-            parentColumns = ["id", "id"],
-            childColumns = ["firstPersonId", "secondPersonId"],
+            parentColumns = ["id"],
+            childColumns = ["firstPersonId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = VkUserDataModel::class,
+            parentColumns = ["id"],
+            childColumns = ["secondPersonId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
