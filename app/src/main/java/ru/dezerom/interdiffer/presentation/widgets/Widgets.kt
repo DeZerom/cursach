@@ -1,6 +1,7 @@
 package ru.dezerom.interdiffer.presentation.widgets
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -112,6 +113,7 @@ fun FullWidthCard(
     modifier: Modifier = Modifier,
     shape: Shape = Shapes.small,
     backgroundColor: Color = Color.White,
+    borderColor: Color? = null,
     content: @Composable () -> Unit
 ) {
     Card(
@@ -119,6 +121,11 @@ fun FullWidthCard(
         shape = shape,
         backgroundColor = backgroundColor,
         elevation = Dimens.Elevations.baseElevation,
+        border = if (borderColor != null) BorderStroke(
+            width = Dimens.Sizes.dividerThickness,
+            color = borderColor
+        ) else
+            null,
         content = content
     )
 }

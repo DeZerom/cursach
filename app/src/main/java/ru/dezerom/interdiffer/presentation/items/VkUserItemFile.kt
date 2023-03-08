@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
@@ -26,10 +27,13 @@ fun VkUserItem(
     model: VkUserModel,
     onClick: (VkUserModel) -> Unit,
     onInfoCircleClick: () -> Unit,
-    onDeleteCircleClick: (VkUserModel) -> Unit
+    onDeleteCircleClick: (VkUserModel) -> Unit,
+    borderColor: Color? = null,
+    showDeleteButton: Boolean = true
 ) {
 
     FullWidthCard(
+        borderColor = borderColor,
         modifier = Modifier
             .clickable { onClick(model) }
     ) {
@@ -74,12 +78,14 @@ fun VkUserItem(
             Column(
                 modifier = Modifier.align(Alignment.TopEnd)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_delete),
-                    contentDescription = stringResource(id = R.string.delete),
-                    modifier = Modifier
-                        .clickable { onDeleteCircleClick(model) }
-                )
+                if (showDeleteButton) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = stringResource(id = R.string.delete),
+                        modifier = Modifier
+                            .clickable { onDeleteCircleClick(model) }
+                    )
+                }
 
                 val deactivationIcon = when (model.deactivationType) {
                     DeactivationType.ACTIVE -> null

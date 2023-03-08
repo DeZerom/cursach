@@ -11,6 +11,12 @@ sealed class NestedNavDestinations(
         override val argName: String = "vk_user_details_screen"
     }
 
+    object VkUserPicker: NestedNavDestinations(
+        rawRoute = "comparison_creator_screen"
+    ) {
+        override val argName: String = "comparison_creator_screen_arg"
+    }
+
     fun asRoute(): String {
         val argsString = "/{$argName}"
 

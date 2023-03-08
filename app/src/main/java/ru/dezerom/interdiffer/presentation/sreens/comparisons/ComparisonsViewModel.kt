@@ -43,7 +43,7 @@ class ComparisonsViewModel @Inject constructor(
 
     fun onAddItemClick() = viewModelScope.launch {
         _sideEffects.forceSend(
-            ComparisonsScreenSideEffect.ShowAddComparisonDialog
+            ComparisonsScreenSideEffect.NavigateToCreateComparisonScreen
         )
     }
 

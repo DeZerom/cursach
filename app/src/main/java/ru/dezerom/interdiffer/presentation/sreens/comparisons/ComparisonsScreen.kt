@@ -5,21 +5,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import ru.dezerom.interdiffer.R
-import ru.dezerom.interdiffer.presentation.dialogs.AddComparisonDialog
 import ru.dezerom.interdiffer.presentation.items.ComparisonItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
 import ru.dezerom.interdiffer.presentation.toolbar.Toolbar
 import ru.dezerom.interdiffer.presentation.utils.MaxSizeModifier
 import ru.dezerom.interdiffer.presentation.utils.res.Dimens
+import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
 import ru.dezerom.interdiffer.presentation.widgets.BaseColumnWidget
 import ru.dezerom.interdiffer.presentation.widgets.BaseLazyColumn
 import ru.dezerom.interdiffer.presentation.widgets.EmptyListWidget
@@ -34,14 +33,10 @@ fun ComparisonsScreen(
     val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
 
     when (sideEffect.value) {
-        ComparisonsScreenSideEffect.ShowAddComparisonDialog -> {
-            val showDialogState = remember { mutableStateOf(true) }
-            showDialogState.value = true
-
-            AddComparisonDialog(
-                showState = showDialogState,
-                onUsersSelect = viewModel::createComparison
-            )
+        ComparisonsScreenSideEffect.NavigateToCreateComparisonScreen -> {
+            LaunchedEffect(key1 = Unit) {
+                navController.navigate(NestedNavDestinations.VkUserPicker.asRoute())
+            }
         }
 
         null -> {}

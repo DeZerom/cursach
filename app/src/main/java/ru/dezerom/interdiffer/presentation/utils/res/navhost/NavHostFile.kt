@@ -12,6 +12,7 @@ import androidx.navigation.compose.navigation
 import ru.dezerom.interdiffer.presentation.sreens.comparisons.ComparisonsScreen
 import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
 import ru.dezerom.interdiffer.presentation.sreens.user_details.UserDetailsScreen
+import ru.dezerom.interdiffer.presentation.sreens.user_picker.UserPickerScreen
 import ru.dezerom.interdiffer.presentation.utils.composableWithArgs
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.Graphs
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
@@ -51,6 +52,10 @@ fun NavGraphBuilder.comparisonsGraph(navController: NavController) {
     navigation(RootNavDestinations.Comparisons.route, Graphs.ComparisonsGraph.route) {
         composable(RootNavDestinations.Comparisons.route) {
             ComparisonsScreen(viewModel = hiltViewModel(), navController = navController)
+        }
+
+        composable(NestedNavDestinations.VkUserPicker.asRoute()) {
+            UserPickerScreen(viewModel = hiltViewModel(), navController = navController)
         }
     }
 }
