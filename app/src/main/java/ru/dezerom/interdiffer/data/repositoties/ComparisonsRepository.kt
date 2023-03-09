@@ -8,7 +8,6 @@ import ru.dezerom.interdiffer.data.utils.safeDaoCall
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.utils.RequestResult
 import ru.dezerom.interdiffer.mappers.toDomain
-import timber.log.Timber
 import javax.inject.Inject
 
 class ComparisonsRepository @Inject constructor(
@@ -20,13 +19,30 @@ class ComparisonsRepository @Inject constructor(
         return safeDaoCall { mapToDomain(comparisonDao.getById(id)) }
     }
 
+    suspend fun getByUsersId(
+        firstUserId: Int,
+        secondUserId: Int
+    ): RequestResult<ComparisonModel> {
+        return safeDaoCall {
+            mapToDomain(
+                comparisonDao.getByUsersId(
+                    firstUserId = firstUserId,
+                    secondUserId = secondUserId
+                )
+            )
+        }
+    }
+
     suspend fun deleteComparison(id: Int): Boolean {
         return safeDaoAction {
             comparisonDao.deleteById(id)
         }
     }
 
-    suspend fun createComparison(firstUserId: Int, secondUserId: Int): Boolean {
+    suspend fun createComparison(
+        firstUserId: Int,
+        secondUserId: Int
+    ): Boolean {
         return safeDaoAction {
             comparisonDao.insertComparison(
                 ComparisonDataModel(
@@ -38,20 +54,18 @@ class ComparisonsRepository @Inject constructor(
         }
     }
 
-    suspend fun getSavedComparison(): RequestResult<List<ComparisonModel>> {
+    suspend fun getSavedComparisons(): RequestResult<List<ComparisonModel>> {
         return safeDaoCall(
             daoCall = { comparisonDao.getAll()?.mapNotNull { mapToDomain(it) } },
             onNullValue = { RequestResult.Success(emptyList()) }
         )
     }
 
-    private suspend fun mapToDomain(model: ComparisonDataModel): ComparisonModel? {
-        Timber.e("$model")
+    private suspend fun mapToDomain(model: ComparisonDataModel?): ComparisonModel? {
+        if (model == null) return null
 
         val firstUser = safeDaoCall { vkUsersDao.getUserById(model.firstPersonId)?.toDomain() }
         val secondUser = safeDaoCall { vkUsersDao.getUserById(model.secondPersonId)?.toDomain() }
-
-        Timber.e("first $firstUser second $secondUser")
 
         return if (firstUser is RequestResult.Success && secondUser is RequestResult.Success) {
             ComparisonModel(

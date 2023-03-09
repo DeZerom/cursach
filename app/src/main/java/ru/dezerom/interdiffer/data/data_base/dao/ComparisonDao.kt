@@ -15,7 +15,10 @@ interface ComparisonDao {
     suspend fun getAll(): List<ComparisonDataModel>?
 
     @Query("SELECT * FROM ComparisonDataModel WHERE id = :id")
-    suspend fun getById(id: Int): ComparisonDataModel
+    suspend fun getById(id: Int): ComparisonDataModel?
+
+    @Query("SELECT * FROM ComparisonDataModel WHERE firstPersonId = :firstUserId AND secondPersonId = :secondUserId")
+    suspend fun getByUsersId(firstUserId: Int, secondUserId: Int): ComparisonDataModel?
 
     @Query("DELETE FROM ComparisonDataModel WHERE id = :id")
     suspend fun deleteById(id: Int)

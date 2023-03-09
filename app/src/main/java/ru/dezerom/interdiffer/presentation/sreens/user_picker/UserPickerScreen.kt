@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
+import ru.dezerom.interdiffer.presentation.dialogs.InfoCirclesDescriptionDialogScreen
 import ru.dezerom.interdiffer.presentation.items.VkUserItem
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseScreen
 import ru.dezerom.interdiffer.presentation.toolbar.Toolbar
@@ -26,13 +27,25 @@ fun UserPickerScreen(
     navController: NavController
 ) {
     val state = viewModel.state.collectAsState()
+    val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
+
+    when (sideEffect.value) {
+        is UserPickerSideEffect.ShowInfoCirclesDialog -> {
+            val showState = remember { mutableStateOf(true) }
+            showState.value = true
+
+            InfoCirclesDescriptionDialogScreen(showState = showState)
+        }
+
+        null -> {}
+    }
 
     BaseScreen(
         viewModel = viewModel,
         navController = navController,
         toolbar = {
             Toolbar(
-                title = stringResource(id = R.string.pick_user),
+                title = stringResource(id = R.string.pick_users),
                 showBackButton = true,
                 onBackButtonClick = viewModel::goBack
             )
@@ -40,15 +53,12 @@ fun UserPickerScreen(
     ) {
         BaseColumnWidget {
             when (val st = state.value) {
-                is UserPickerScreenState.PickFirst -> PickerWrapper(
-                    pickingFirst = true,
+                is UserPickerScreenState.PickingUsers -> PickerWrapper(
+                    pickingFirst = st.isPickingFirst,
                     viewModel = viewModel,
-                    users = st.users
-                )
-                is UserPickerScreenState.PickSecond -> PickerWrapper(
-                    pickingFirst = false,
-                    viewModel = viewModel,
-                    users = st.users
+                    users = st.users,
+                    firstPickedUser = st.firstPickedUser,
+                    secondPickedUser = st.secondPickedUser
                 )
 
                 UserPickerScreenState.Empty -> {}
@@ -61,26 +71,35 @@ fun UserPickerScreen(
 private fun PickerWrapper(
     pickingFirst: Boolean,
     viewModel: UserPickerViewModel,
-    users: List<VkUserModel>
+    users: List<VkUserModel>,
+    firstPickedUser: VkUserModel?,
+    secondPickedUser: VkUserModel?
 ) {
-    val selectedUsers = remember(viewModel) { mutableStateOf(viewModel.selectedUsers) }
-
     Column(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Dimens.Paddings.basePadding)
+            .padding(
+                top = Dimens.Paddings.basePadding,
+                start = Dimens.Paddings.basePadding,
+                end = Dimens.Paddings.basePadding
+            )
     ) {
         PickedUsersSection(
             pickingFirst = pickingFirst,
             onFirstUserClicked = viewModel::onFirstUserClicked,
             onSecondUserClicked = viewModel::onSecondUserClicked,
             onAddButtonClicked = viewModel::onAddButtonClicked,
-            selectedUsers = selectedUsers.value
+            selectedUsers = remember(firstPickedUser, secondPickedUser) {
+                Pair(firstPickedUser, secondPickedUser)
+            }
         )
 
         UsersList(
-            onUserClicked = remember(viewModel) { {viewModel.onUserSelected(pickingFirst, it) } },
+            onUserClicked = remember(viewModel, pickingFirst) {
+                { viewModel.onUserSelected(pickingFirst, it) }
+            },
             onInfoCirclesClicked = viewModel::onInfoCirclesClicked,
             users = users
         )
@@ -169,6 +188,7 @@ private fun UserInfoRow(
             onClick = remember { { onClick() } },
             onInfoCircleClick = {},
             onDeleteCircleClick = {},
+            showDeleteButton = false,
             borderColor = if (isActive) Orange else null
         )
     }

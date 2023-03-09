@@ -10,8 +10,10 @@ import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.R
 import ru.dezerom.interdiffer.domain.interactors.ComparisonsInteractor
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
-import ru.dezerom.interdiffer.domain.models.user.VkUserModel
 import ru.dezerom.interdiffer.domain.models.utils.handle
+import ru.dezerom.interdiffer.presentation.change_listener.comparison.ComparisonsChangeListener
+import ru.dezerom.interdiffer.presentation.change_listener.comparison.ComparisonsChangeListenersHolder
+import ru.dezerom.interdiffer.presentation.change_listener.comparison.ComparisonsChangePayload
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import ru.dezerom.interdiffer.presentation.utils.forceSend
 import javax.inject.Inject
@@ -19,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ComparisonsViewModel @Inject constructor(
     private val comparisonsInteractor: ComparisonsInteractor
-): BaseViewModel() {
+): BaseViewModel(), ComparisonsChangeListener {
 
     private val _state: MutableStateFlow<ComparisonsScreenState> =
         MutableStateFlow(ComparisonsScreenState.Empty)
@@ -30,15 +32,30 @@ class ComparisonsViewModel @Inject constructor(
     val sideEffect = _sideEffects.asSharedFlow()
 
     init {
+        ComparisonsChangeListenersHolder.registerListener(this)
         fetchInfo()
+    }
+
+    override fun onCleared() {
+        ComparisonsChangeListenersHolder.unregisterListener(this)
+        super.onCleared()
     }
 
     override fun onCriticalErrorClick() {
         fetchInfo()
     }
 
-    fun createComparison(firstUser: VkUserModel, secondUser: VkUserModel) = viewModelScope.launch {
-        //todo
+    override fun onChange(payload: ComparisonsChangePayload) {
+        when (payload) {
+            is ComparisonsChangePayload.ComparisonAdded -> {
+                val currentState = state.value
+                if (currentState is ComparisonsScreenState.ShowList) {
+                    _state.value = currentState.copy(
+                        list = currentState.list + payload.comparison
+                    )
+                }
+            }
+        }
     }
 
     fun onAddItemClick() = viewModelScope.launch {

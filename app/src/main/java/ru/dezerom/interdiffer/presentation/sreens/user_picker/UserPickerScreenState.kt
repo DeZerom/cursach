@@ -6,8 +6,12 @@ sealed interface UserPickerScreenState {
 
     object Empty: UserPickerScreenState
 
-    class PickFirst(val users: List<VkUserModel>) : UserPickerScreenState
-
-    class PickSecond(val users: List<VkUserModel>) : UserPickerScreenState
+    data class PickingUsers(
+        val users: List<VkUserModel>,
+        val isPickingFirst: Boolean,
+        val firstPickedUser: VkUserModel? = null,
+        val secondPickedUser: VkUserModel? = null,
+        val isAddingAllowed: Boolean = false
+    ): UserPickerScreenState
 
 }

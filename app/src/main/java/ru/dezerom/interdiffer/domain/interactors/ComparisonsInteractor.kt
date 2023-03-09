@@ -16,12 +16,19 @@ class ComparisonsInteractor @Inject constructor(
         return comparisonsRepository.deleteComparison(id)
     }
 
-    suspend fun createComparison(firstUserId: Int, secondUserId: Int): Boolean {
-        return comparisonsRepository.createComparison(firstUserId, secondUserId)
+    suspend fun createComparison(
+        firstUserId: Int,
+        secondUserId: Int
+    ): RequestResult<ComparisonModel> {
+        val creationResult = comparisonsRepository.createComparison(firstUserId, secondUserId)
+
+        if (!creationResult) return RequestResult.Error.RoomError
+
+        return comparisonsRepository.getByUsersId(firstUserId, secondUserId)
     }
 
     suspend fun getSavedComparisons(): RequestResult<List<ComparisonModel>> {
-        return comparisonsRepository.getSavedComparison()
+        return comparisonsRepository.getSavedComparisons()
     }
 
     suspend fun refreshComparison(comparison: ComparisonModel): RequestResult<ComparisonModel> {

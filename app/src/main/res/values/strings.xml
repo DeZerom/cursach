@@ -29,7 +29,9 @@
     <string name="adding_comparison">Добавление сравнения</string>
     <string name="click_here_to_add">Нажмите сюда, чтобы добавить</string>
     <string name="no_user_selected">Пользователь не выбран</string>
-    <string name="pick_user">Выберите пользователя</string>
+    <string name="pick_users">Выберите пользователей</string>
+    <string name="pick_two_users">Выберите двух пользователей</string>
+    <string name="comparison_added">Сравнение добавлено</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>

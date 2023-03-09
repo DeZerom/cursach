@@ -13,7 +13,7 @@ fun <T> RequestResult<T>.handle(
 
 suspend fun <T> RequestResult<T>.suspendHandle(
     onSuccess: suspend (T) -> Unit,
-    onError: (RequestResult.Error) -> Unit
+    onError: suspend (RequestResult.Error) -> Unit
 ) {
     when (this) {
         is RequestResult.Success -> onSuccess(data)
