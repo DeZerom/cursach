@@ -32,6 +32,8 @@
     <string name="pick_users">Выберите пользователей</string>
     <string name="pick_two_users">Выберите двух пользователей</string>
     <string name="comparison_added">Сравнение добавлено</string>
+    <string name="invalid_comparison_too_few_societies_single_user">У пользователя %s слишком мало подписок, чтобы сравнение можно было считать состоятельным</string>
+    <string name="invalid_comparison_too_few_societies_two_users">У пользователей %1s, %2s слишком мало подписок, чтобы сравнение можно было считать состоятельным</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>

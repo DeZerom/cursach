@@ -12,16 +12,11 @@ class AuthInterceptor @Inject constructor(): Interceptor {
         val newRequest = request.newBuilder()
             .headers(
                 request.headers.newBuilder()
-                    .add(ACCESS_TOKEN)
+                    .add(TokenObj.ACCESS_TOKEN)
                     .build()
             )
             .build()
 
         return chain.proceed(newRequest)
-    }
-
-    companion object {
-        private const val ACCESS_TOKEN =
-            "Authorization: Bearer 647fbe85647fbe85647fbe85cc676daf426647f647fbe8507d09ffa93aa3ccef8ebe8fc"
     }
 }
