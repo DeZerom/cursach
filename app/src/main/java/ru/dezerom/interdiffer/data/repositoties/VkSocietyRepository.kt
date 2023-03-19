@@ -100,11 +100,12 @@ class VkSocietyRepository @Inject constructor(
             userSocietyRelationsDao.deleteUserSocietyRelations(savedRelations.data)
         } && safeDaoAction {
             userSocietyRelationsDao.saveUserSocietyRelations(
-                relations = societies.map {
+                relations = societies.mapIndexed { index, society ->
                     UserSocietyRelationDataModel(
                         id = AUTO_GENERATED_ID,
                         userId = userId,
-                        societyId = it.id ?: 0
+                        societyId = society.id ?: 0,
+                        orderNumber = index
                     )
                 }
             )

@@ -26,11 +26,15 @@ import androidx.room.PrimaryKey
 data class UserSocietyRelationDataModel(
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("id")
     val id: Long,
 
-    @ColumnInfo(index = true)
+    @ColumnInfo(name = "userId", index = true)
     val userId: Int,
 
-    @ColumnInfo(index = true)
-    val societyId: Int
+    @ColumnInfo(name = "societyId", index = true)
+    val societyId: Int,
+
+    @ColumnInfo("orderNumber")
+    val orderNumber: Int
 )
