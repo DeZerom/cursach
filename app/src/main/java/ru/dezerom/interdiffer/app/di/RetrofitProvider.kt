@@ -2,6 +2,7 @@ package ru.dezerom.interdiffer.app.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,9 +40,9 @@ class RetrofitProvider {
             .build()
 
     @Provides
-    fun provideRetrofitBuilder(client: OkHttpClient): Retrofit.Builder =
+    fun provideRetrofitBuilder(client: OkHttpClient, gson: Gson): Retrofit.Builder =
         Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
 
     @Provides

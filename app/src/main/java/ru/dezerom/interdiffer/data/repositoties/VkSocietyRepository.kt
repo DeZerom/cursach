@@ -60,11 +60,12 @@ class VkSocietyRepository @Inject constructor(
                     )
                 },
                 onNullValue = { RequestResult.Error.Network },
-                successMapper = { response -> response.data?.societies }
+                successMapper = { response -> response.data?.societies?.filterNotNull() }
             )
 
             result = if (societiesRes is RequestResult.Success) {
                 societies.addAll(societiesRes.data)
+                true
             } else {
                 false
             }
@@ -86,47 +87,24 @@ class VkSocietyRepository @Inject constructor(
     }
 
     private suspend fun changeRelations(userId: Int, societies: List<VkSocietyDataModel>): Boolean {
-        val relations = safeDaoCall(
+        val savedRelations = safeDaoCall(
             daoCall = { userSocietyRelationsDao.getRelationsByUserId(userId) },
             onNullValue = { RequestResult.Success(emptyList()) }
         )
 
-        if (relations !is RequestResult.Success) return false
+        if (savedRelations !is RequestResult.Success) return false
 
         return safeDaoAction {
-            userSocietyRelationsDao.deleteUserSocietyRelations(
-                findRelationsToDelete(relations.data, societies)
-            )
+            userSocietyRelationsDao.deleteUserSocietyRelations(savedRelations.data)
         } && safeDaoAction {
             userSocietyRelationsDao.saveUserSocietyRelations(
-                createRelationsToAdd(relations.data, societies, userId)
-            )
-        }
-    }
-
-    private fun findRelationsToDelete(
-        relations: List<UserSocietyRelationDataModel>,
-        societies: List<VkSocietyDataModel>
-    ): List<UserSocietyRelationDataModel> {
-        return relations.filter { relation ->
-            !societies.any { it.id == relation.societyId }
-        }
-    }
-
-    private fun createRelationsToAdd(
-        relations: List<UserSocietyRelationDataModel>,
-        societies: List<VkSocietyDataModel>,
-        userId: Int
-    ): List<UserSocietyRelationDataModel> {
-        val needRelation = societies.filter { society ->
-            !relations.any { it.societyId == society.id }
-        }
-
-        return needRelation.map {
-            UserSocietyRelationDataModel(
-                id = AUTO_GENERATED_ID,
-                userId = userId,
-                societyId = it.id ?: 0
+                relations = societies.map {
+                    UserSocietyRelationDataModel(
+                        id = AUTO_GENERATED_ID,
+                        userId = userId,
+                        societyId = it.id ?: 0
+                    )
+                }
             )
         }
     }

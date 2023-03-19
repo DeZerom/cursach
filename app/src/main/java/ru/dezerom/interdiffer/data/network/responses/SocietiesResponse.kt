@@ -12,5 +12,5 @@ data class SocietiesResponse(
 
     @Expose
     @SerializedName("items")
-    val societies: List<VkSocietyDataModel> = emptyList()
+    val societies: List<VkSocietyDataModel?> = emptyList()
 )
