@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
-import ru.dezerom.interdiffer.data.type_converters.SocietyTypeAdapter
+import ru.dezerom.interdiffer.data.network.type_adapters.SocietyTypeAdapter
 
 @Entity
 @JsonAdapter(SocietyTypeAdapter::class)

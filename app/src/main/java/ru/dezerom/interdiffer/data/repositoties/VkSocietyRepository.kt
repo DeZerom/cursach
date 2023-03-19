@@ -47,13 +47,14 @@ class VkSocietyRepository @Inject constructor(
             return false
 
         var result: Boolean
+        var offset = 0
         val societies = mutableListOf<VkSocietyDataModel>()
         while (count > 0) {
             val societiesRes = safeVkApiCall(
                 call = {
                     usersApiService.getUserSubscriptions(
                         userId = userId,
-                        offset = 0,
+                        offset = offset,
                         count = min(count, MAX_COUNT_PER_BATCH),
                         fields = SOCIETY_FIELDS,
                         extended = true
@@ -73,6 +74,7 @@ class VkSocietyRepository @Inject constructor(
             if (!result) break
 
             count -= MAX_COUNT_PER_BATCH
+            offset += MAX_COUNT_PER_BATCH
         }
 
         result = writeSocietiesToDb(societies) && changeRelations(userId, societies)

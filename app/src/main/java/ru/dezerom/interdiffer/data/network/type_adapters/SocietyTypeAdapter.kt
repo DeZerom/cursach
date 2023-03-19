@@ -1,4 +1,4 @@
-package ru.dezerom.interdiffer.data.type_converters
+package ru.dezerom.interdiffer.data.network.type_adapters
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
