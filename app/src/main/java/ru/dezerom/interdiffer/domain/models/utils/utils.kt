@@ -21,3 +21,15 @@ suspend fun <T> RequestResult<T>.suspendHandle(
         is RequestResult.Error -> onError(this)
     }
 }
+
+fun <T, R> RequestResult<T>.castError(): RequestResult<R> {
+    return when (this) {
+        is RequestResult.Success -> RequestResult.Error.Network
+
+        is RequestResult.Error.VkError -> this
+
+        RequestResult.Error.Network -> RequestResult.Error.Network
+        RequestResult.Error.NothingFoundError -> RequestResult.Error.NothingFoundError
+        RequestResult.Error.RoomError -> RequestResult.Error.RoomError
+    }
+}

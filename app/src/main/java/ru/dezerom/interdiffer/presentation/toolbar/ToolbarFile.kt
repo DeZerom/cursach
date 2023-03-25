@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ru.dezerom.interdiffer.R
@@ -21,10 +22,12 @@ import ru.dezerom.interdiffer.ui.theme.bottomRoundedShape
 fun Toolbar(
     title: String,
     showBackButton: Boolean = false,
-    onBackButtonClick: () -> Unit = {}
+    onBackButtonClick: () -> Unit = {},
+    backgroundColor: Color = Color.White
 ) {
     FullWidthCard(
         shape = bottomRoundedShape(),
+        backgroundColor = backgroundColor,
         modifier = Modifier.height(Dimens.Sizes.toolbarHeight)
     ) {
         Box(

@@ -17,6 +17,12 @@ sealed class NestedNavDestinations(
         override val argName: String = "comparison_creator_screen_arg"
     }
 
+    object ComparisonDetail : NestedNavDestinations(
+        rawRoute = "comparison_detail_screen"
+    ) {
+        override val argName: String = "comparison_detail_screen_arg"
+    }
+
     fun asRoute(): String {
         val argsString = "/{$argName}"
 

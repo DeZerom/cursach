@@ -32,10 +32,17 @@ fun ComparisonsScreen(
     val state = viewModel.state.collectAsState()
     val sideEffect = viewModel.sideEffect.collectAsState(initial = null)
 
-    when (sideEffect.value) {
+    when (val se = sideEffect.value) {
         ComparisonsScreenSideEffect.NavigateToCreateComparisonScreen -> {
             LaunchedEffect(key1 = Unit) {
                 navController.navigate(NestedNavDestinations.VkUserPicker.asRoute())
+            }
+        }
+        is ComparisonsScreenSideEffect.NavigateToComparisonDetailScreen -> {
+            LaunchedEffect(key1 = Unit) {
+                navController.navigate(
+                    NestedNavDestinations.ComparisonDetail.withArg(se.comparisonId)
+                )
             }
         }
 

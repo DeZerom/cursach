@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import ru.dezerom.interdiffer.presentation.sreens.comparison_detail.pager.ComparisonDetailScreen
 import ru.dezerom.interdiffer.presentation.sreens.comparisons.ComparisonsScreen
 import ru.dezerom.interdiffer.presentation.sreens.people.PeopleScreen
 import ru.dezerom.interdiffer.presentation.sreens.user_details.UserDetailsScreen
@@ -56,6 +57,13 @@ fun NavGraphBuilder.comparisonsGraph(navController: NavController) {
 
         composable(NestedNavDestinations.VkUserPicker.asRoute()) {
             UserPickerScreen(viewModel = hiltViewModel(), navController = navController)
+        }
+
+        composableWithArgs(
+            route = NestedNavDestinations.ComparisonDetail.asRoute(),
+            argName = NestedNavDestinations.ComparisonDetail.argName
+        ) {
+            ComparisonDetailScreen(viewModel = hiltViewModel(), navController = navController)
         }
     }
 }

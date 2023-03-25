@@ -65,7 +65,9 @@ class ComparisonsViewModel @Inject constructor(
     }
 
     fun onClick(item: ComparisonModel) = viewModelScope.launch {
-        //todo
+        _sideEffects.forceSend(
+            ComparisonsScreenSideEffect.NavigateToComparisonDetailScreen(item.id)
+        )
     }
 
     fun onDeleteClick(item: ComparisonModel) = viewModelScope.launch {

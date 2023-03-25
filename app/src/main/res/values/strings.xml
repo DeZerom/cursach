@@ -34,6 +34,9 @@
     <string name="comparison_added">Сравнение добавлено</string>
     <string name="invalid_comparison_too_few_societies_single_user">У пользователя %s слишком мало подписок, чтобы сравнение можно было считать состоятельным</string>
     <string name="invalid_comparison_too_few_societies_two_users">У пользователей %1s, %2s слишком мало подписок, чтобы сравнение можно было считать состоятельным</string>
+    <string name="comparison">Сравнение</string>
+    <string name="overall_info">Общая информация</string>
+    <string name="matches_info">Информация и совпадениях</string>
 
     <!-- Errors -->
     <string name="unknown_error">Неизвестная ошибка</string>
