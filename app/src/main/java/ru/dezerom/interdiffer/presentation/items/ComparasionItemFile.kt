@@ -59,8 +59,8 @@ fun ComparisonItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .height(IntrinsicSize.Min)
+                    .fillMaxWidth()
             ) {
                 InfoColumn(person = comparison.firstPerson, textAlignment = Alignment.Start)
 
@@ -87,11 +87,15 @@ fun ComparisonItem(
 @Composable
 private fun InfoColumn(
     person: VkUserModel,
-    textAlignment: Alignment.Horizontal
+    textAlignment: Alignment.Horizontal,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = textAlignment,
-        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding)
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding),
+        modifier = Modifier
+            .width(Dimens.Sizes.smallPhotoSize)
+            .then(modifier)
     ) {
         BaseText(text = person.firstName)
 

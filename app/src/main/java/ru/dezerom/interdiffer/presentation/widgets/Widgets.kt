@@ -148,7 +148,8 @@ fun BaseLazyColumn(
 @Composable
 fun Photo100(
     model: String,
-    @DrawableRes placeholder: Int
+    @DrawableRes placeholder: Int,
+    modifier: Modifier = Modifier
 ) {
     AsyncImage(
         model = model,
@@ -158,5 +159,6 @@ fun Photo100(
         modifier = Modifier
             .size(Dimens.Sizes.smallPhotoSize)
             .clip(Shapes.small)
+            .then(modifier)
     )
 }
