@@ -45,7 +45,7 @@ fun ComparisonDetailScreen(
     ) {
         when (val st = state.value) {
             is ComparisonDetailScreenState.ShowInfo -> {
-                PagerComponent(state = st, pagerState = pagerState)
+                PagerComponent(state = st, pagerState = pagerState, viewModel = viewModel)
             }
 
             ComparisonDetailScreenState.Empty -> {}
@@ -57,6 +57,7 @@ fun ComparisonDetailScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PagerComponent(
+    viewModel: ComparisonDetailViewModel,
     state: ComparisonDetailScreenState.ShowInfo,
     pagerState: PagerState
 ) {
@@ -69,7 +70,10 @@ private fun PagerComponent(
         state = pagerState
     ) {
         when (screens[it]) {
-            ComparisonPagerScreens.OVERALL_INFO -> OverallInfoScreen()
+            ComparisonPagerScreens.OVERALL_INFO -> OverallInfoScreen(
+                viewModel = viewModel,
+                detailedComparison = state.detailedComparison
+            )
             ComparisonPagerScreens.MATCHES_INFO -> MatchesInfoScreen()
         }
     }

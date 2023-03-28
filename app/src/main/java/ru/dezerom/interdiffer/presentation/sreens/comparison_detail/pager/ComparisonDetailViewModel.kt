@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.dezerom.interdiffer.domain.interactors.ComparisonsInteractor
+import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.utils.handle
 import ru.dezerom.interdiffer.presentation.sreens.base.BaseViewModel
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.NestedNavDestinations
@@ -35,6 +36,10 @@ class ComparisonDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getInfo()
         }
+    }
+
+    fun onDelete(comparison: ComparisonModel) = viewModelScope.launch {
+
     }
 
     private suspend fun getInfo() {

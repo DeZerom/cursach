@@ -5,6 +5,10 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 import ru.dezerom.interdiffer.presentation.utils.res.destinations.RootNavDestinations
 
+fun Double.toNearestInt(): Int {
+    return (this + 0.5).toInt()
+}
+
 fun NavDestination?.isRootDestination(): Boolean {
     this ?: return false
 
