@@ -1,28 +1,8 @@
 package ru.dezerom.interdiffer.data.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = VkUserDataModel::class,
-            parentColumns = ["id"],
-            childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = VkSocietyDataModel::class,
-            parentColumns = ["id"],
-            childColumns = ["societyId"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity
 data class UserSocietyRelationDataModel(
 
     @PrimaryKey(autoGenerate = true)

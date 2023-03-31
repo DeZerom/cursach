@@ -89,15 +89,8 @@ class VkSocietyRepository @Inject constructor(
     }
 
     private suspend fun changeRelations(userId: Int, societies: List<VkSocietyDataModel>): Boolean {
-        val savedRelations = safeDaoCall(
-            daoCall = { userSocietyRelationsDao.getRelationsByUserId(userId) },
-            onNullValue = { RequestResult.Success(emptyList()) }
-        )
-
-        if (savedRelations !is RequestResult.Success) return false
-
         return safeDaoAction {
-            userSocietyRelationsDao.deleteUserSocietyRelations(savedRelations.data)
+            userSocietyRelationsDao.deleteRelationsByUserId(userId)
         } && safeDaoAction {
             userSocietyRelationsDao.saveUserSocietyRelations(
                 relations = societies.mapIndexed { index, society ->

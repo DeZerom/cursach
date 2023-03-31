@@ -1,35 +1,40 @@
 package ru.dezerom.interdiffer.domain.logic.differ
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.dezerom.interdiffer.domain.logic.categorizer.categorizeSocieties
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonInvalidationReason
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.comparasion.DetailedComparisonModel
 import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
+import timber.log.Timber
 import java.lang.Integer.min
 
-fun createDetailedComparison(
+suspend fun createDetailedComparison(
     comparison: ComparisonModel,
     firstPersonSocieties: List<VkSocietyModel>,
     secondPersonSocieties: List<VkSocietyModel>
 ): DetailedComparisonModel {
-    return DetailedComparisonModel(
-        comparisonId = comparison.id,
-        firstPerson = comparison.firstPerson,
-        secondPerson = comparison.secondPerson,
-        firstPersonSocieties = firstPersonSocieties,
-        secondPersonSocieties = secondPersonSocieties,
-        overallMatching = computeOverallMatching(firstPersonSocieties, secondPersonSocieties),
-        categoriesMatching = categoriesMatching(firstPersonSocieties, secondPersonSocieties),
-        invalidationReason = validateComparison(
-            comparison.firstPerson,
-            comparison.secondPerson,
-            firstPersonSocieties,
-            secondPersonSocieties
-        ),
-        weakMatches = findWeakMatches(firstPersonSocieties, secondPersonSocieties),
-        strongMatches = findStrongMatches(firstPersonSocieties, secondPersonSocieties)
-    )
+    return withContext(Dispatchers.Default) {
+        DetailedComparisonModel(
+            comparisonId = comparison.id,
+            firstPerson = comparison.firstPerson,
+            secondPerson = comparison.secondPerson,
+            firstPersonSocieties = firstPersonSocieties,
+            secondPersonSocieties = secondPersonSocieties,
+            overallMatching = computeOverallMatching(firstPersonSocieties, secondPersonSocieties),
+            categoriesMatching = categoriesMatching(firstPersonSocieties, secondPersonSocieties),
+            invalidationReason = validateComparison(
+                comparison.firstPerson,
+                comparison.secondPerson,
+                firstPersonSocieties,
+                secondPersonSocieties
+            ),
+            weakMatches = findWeakMatches(firstPersonSocieties, secondPersonSocieties),
+            strongMatches = findStrongMatches(firstPersonSocieties, secondPersonSocieties)
+        )
+    }
 }
 
 private fun findWeakMatches(
@@ -110,11 +115,29 @@ private fun computeOverallMatching(
     listA: List<VkSocietyModel>,
     listB: List<VkSocietyModel>
 ): Double {
-    val inCommon = listA.filter { societyA ->
-        listB.any { societyB -> societyA.id == societyB.id }
-    }.size.toDouble()
+    Timber.e("listA size = ${listA.size} listB size = ${listB.size}")
 
-    return inCommon / (listA.size + listB.size)
+    val (minList, maxList) = if (listA.size < listB.size)
+        Pair(listA, listB)
+    else
+        Pair(listB, listA)
+
+    var inCommon = 0
+    maxList.forEach {
+        for (s in minList) {
+            if (s.id == it.id) {
+                inCommon++
+            }
+
+            if (s.name == it.name) {
+                Timber.e("s = ${s.name}, ${s.id}; it = ${it.name}, ${it.id}")
+            }
+        }
+    }
+    Timber.e("inCommon = $inCommon")
+
+    Timber.e("-------------------------------------")
+    return (inCommon.toDouble() / (minList.size + maxList.size).toDouble()) * 100
 }
 
 private const val TOP_SOCIETIES_COUNT = 5
