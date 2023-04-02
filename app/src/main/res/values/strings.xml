@@ -20,6 +20,7 @@
     <string name="birth_date">Дата рождения: %s</string>
     <string name="not_set">Не указана</string>
     <string name="subscriptions_count">Всего подписок: %s</string>
+    <string name="subscriptions_count_binary">Всего подписок: %1d vs %2d</string>
     <string name="group">Группа</string>
     <string name="page">Публичная страница</string>
     <string name="event">Мероприятие</string>
@@ -40,6 +41,7 @@
     <string name="overall_match">Общее совпадение: %d%%</string>
     <string name="matches_by_categories">Совпадение по категориям:</string>
     <string name="category_match">%s: %d%%</string>
+    <string name="category_count_binary">%s: %1d vs %2d</string>
     <string name="attention">Внимание!</string>
 
     <!-- Errors -->

@@ -1,10 +1,12 @@
 package ru.dezerom.interdiffer.domain.models.society
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 
 @Parcelize
+@Immutable
 data class VkSocietyModel(
     val id: Int,
     val name: String,

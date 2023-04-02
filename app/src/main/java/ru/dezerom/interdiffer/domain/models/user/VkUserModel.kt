@@ -1,11 +1,13 @@
 package ru.dezerom.interdiffer.domain.models.user
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 import ru.dezerom.interdiffer.domain.models.DeactivationType
 import ru.dezerom.interdiffer.domain.models.utils.PartialDate
 
 @Parcelize
+@Immutable
 data class VkUserModel(
     val id: Int,
     val firstName: String,

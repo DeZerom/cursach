@@ -21,8 +21,8 @@ suspend fun createDetailedComparison(
             comparisonId = comparison.id,
             firstPerson = comparison.firstPerson,
             secondPerson = comparison.secondPerson,
-            firstPersonSocieties = firstPersonSocieties,
-            secondPersonSocieties = secondPersonSocieties,
+            firstPersonCategorizedSocieties = categorizeSocieties(firstPersonSocieties),
+            secondPersonCategorizedSocieties = categorizeSocieties(secondPersonSocieties),
             overallMatching = computeOverallMatching(firstPersonSocieties, secondPersonSocieties),
             categoriesMatching = categoriesMatching(firstPersonSocieties, secondPersonSocieties),
             invalidationReason = validateComparison(
@@ -122,22 +122,13 @@ private fun computeOverallMatching(
     else
         Pair(listB, listA)
 
-    var inCommon = 0
-    maxList.forEach {
-        for (s in minList) {
-            if (s.id == it.id) {
-                inCommon++
-            }
-
-            if (s.name == it.name) {
-                Timber.e("s = ${s.name}, ${s.id}; it = ${it.name}, ${it.id}")
-            }
-        }
+    val inCommon = maxList.sumOf { maxSociety ->
+        if (minList.any { it.id == maxSociety.id }) ONE else ZERO
     }
-    Timber.e("inCommon = $inCommon")
 
-    Timber.e("-------------------------------------")
     return (inCommon.toDouble() / (minList.size + maxList.size).toDouble()) * 100
 }
 
 private const val TOP_SOCIETIES_COUNT = 5
+private const val ONE: Int = 1
+private const val ZERO: Int = 0

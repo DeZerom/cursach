@@ -7,11 +7,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import ru.dezerom.interdiffer.R
+import ru.dezerom.interdiffer.domain.logic.categorizer.countOfSocieties
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonInvalidationReason
 import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.comparasion.DetailedComparisonModel
@@ -73,7 +75,73 @@ fun OverallInfoScreen(
                     categoriesMatches = detailedComparison.categoriesMatching,
                     modifier = Modifier.padding(top = Dimens.Paddings.basePadding)
                 )
+
+                OverallInfo(
+                    detailedComparison = detailedComparison,
+                    modifier = Modifier.padding(top = Dimens.Paddings.basePadding)
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun OverallInfo(
+    detailedComparison: DetailedComparisonModel,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Paddings.smallPadding),
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                color = Orange,
+                width = Dimens.Sizes.dividerThickness,
+                shape = Shapes.small
+            )
+            .padding(Dimens.Paddings.basePadding)
+    ) {
+        Text(
+            text = stringResource(
+                id = R.string.subscriptions_count_binary,
+                formatArgs = arrayOf(
+                    detailedComparison.firstPersonCategorizedSocieties.countOfSocieties(),
+                    detailedComparison.secondPersonCategorizedSocieties.countOfSocieties()
+                )
+            ),
+            fontWeight = FontWeight.Medium,
+            color = Color.Black
+        )
+
+        Text(
+            text = stringResource(id = R.string.matches_by_categories),
+            fontWeight = FontWeight.Medium,
+            color = Color.Black
+        )
+
+        val mergedCategories: Map<String, Pair<Int, Int>> = remember(detailedComparison) {
+            buildMap {
+                detailedComparison.categoriesMatching.keys.forEach { category ->
+                    val firstCount = detailedComparison.firstPersonCategorizedSocieties
+                        .find { it.name == category }
+                        ?.count ?: 0
+                    val secondCount =
+                        detailedComparison.secondPersonCategorizedSocieties
+                            .find { it.name == category }
+                            ?.count ?: 0
+
+                    put(category, Pair(firstCount, secondCount))
+                }
+            }
+        }
+        mergedCategories.forEach { (name, counts) ->
+            BaseSmallText(
+                text = stringResource(
+                    id = R.string.category_count_binary,
+                    formatArgs = arrayOf(name, counts.first, counts.second)
+                ),
+                modifier = Modifier.padding(start = Dimens.Paddings.basePadding)
+            )
         }
     }
 }
@@ -127,7 +195,8 @@ private fun Common(
                 color = Orange,
                 width = Dimens.Sizes.dividerThickness,
                 shape = Shapes.small
-            ).padding(Dimens.Paddings.basePadding)
+            )
+            .padding(Dimens.Paddings.basePadding)
     ) {
         Text(
             text = stringResource(

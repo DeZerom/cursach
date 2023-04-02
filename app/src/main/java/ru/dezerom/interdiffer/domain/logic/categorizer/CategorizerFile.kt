@@ -21,5 +21,5 @@ fun categorizeSocieties(societies: List<VkSocietyModel>): List<SocietyCategory> 
     }
 }
 
-fun List<SocietyCategory>.countOfSocieties(): Int =
+fun Iterable<SocietyCategory>.countOfSocieties(): Int =
     this.sumOf { it.count }
