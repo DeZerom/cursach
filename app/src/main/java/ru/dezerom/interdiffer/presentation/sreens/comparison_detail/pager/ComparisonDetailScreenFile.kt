@@ -74,7 +74,9 @@ private fun PagerComponent(
                 viewModel = viewModel,
                 detailedComparison = state.detailedComparison
             )
-            ComparisonPagerScreens.MATCHES_INFO -> MatchesInfoScreen()
+            ComparisonPagerScreens.MATCHES_INFO -> MatchesInfoScreen(
+                detailedComparison = state.detailedComparison
+            )
         }
     }
 
