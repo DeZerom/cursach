@@ -8,7 +8,6 @@ import ru.dezerom.interdiffer.domain.models.comparasion.ComparisonModel
 import ru.dezerom.interdiffer.domain.models.comparasion.DetailedComparisonModel
 import ru.dezerom.interdiffer.domain.models.society.VkSocietyModel
 import ru.dezerom.interdiffer.domain.models.user.VkUserModel
-import timber.log.Timber
 import java.lang.Integer.min
 
 suspend fun createDetailedComparison(
@@ -115,8 +114,6 @@ private fun computeOverallMatching(
     listA: List<VkSocietyModel>,
     listB: List<VkSocietyModel>
 ): Double {
-    Timber.e("listA size = ${listA.size} listB size = ${listB.size}")
-
     val (minList, maxList) = if (listA.size < listB.size)
         Pair(listA, listB)
     else
