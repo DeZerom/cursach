@@ -28,7 +28,12 @@ class VkSocietyRepository @Inject constructor(
 
     suspend fun getSavedSocieties(userId: Int): RequestResult<List<VkSocietyModel>> {
         return safeDaoCall {
-            societiesDao.getUserSocieties(userId).map { it.toDomain() }
+            val relations = userSocietyRelationsDao.getUserRelations(userId)
+            val societies = societiesDao.getUserSocieties(userId).map { it.toDomain() }
+
+            societies.sortedBy { society ->
+                relations.find { it.societyId == society.id }?.orderNumber ?: Int.MAX_VALUE
+            }
         }
     }
 
